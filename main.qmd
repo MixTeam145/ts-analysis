@@ -1,20 +1,5 @@
 ---
 title: "Статистический анализ временных рядов"
-
-format:
-  html:
-    toc: true
-    toc-location: left
-    toc-depth: 2
-    toc-title: "Оглавление"
-    number-sections: true
-    
-execute: 
-  cache: true
-  
-knitr:
-  opts_chunk: 
-    comment: "##"
 ---
 
 Подключаем необходимые библиотеки:

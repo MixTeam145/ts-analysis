@@ -1,0 +1,19 @@
+project:
+  title: "ts-analysis"
+  type: website
+  output-dir: docs
+  
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-depth: 2
+    toc-title: "Оглавление"
+    number-sections: true
+    
+execute:
+  cache: true
+  
+knitr:
+  opts_chunk: 
+    comment: "##"
