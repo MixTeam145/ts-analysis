@@ -1,0 +1,2079 @@
+---
+title: "Статистический анализ временных рядов"
+
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-depth: 2
+    toc-title: "Оглавление"
+    number-sections: true
+    
+execute: 
+  cache: true
+  
+knitr:
+  opts_chunk: 
+    comment: "##"
+---
+
+Подключаем необходимые библиотеки:
+```{r}
+#| message: false
+
+library(ggpubr)
+library(lattice)
+library(astsa)
+library(fpp)
+library(longmemo)
+library(mFilter)
+library(parallel)
+library(doFuture)
+library(doRNG)
+library(tseries)
+
+source("./R/eossa_new.R")
+```
+
+```{r}
+#| include: false
+
+ggtsdisplay <- function(x,
+                        plot.type = c("spectrum", "partial", "histogram", "scatter"),
+                        points = TRUE,
+                        smooth = FALSE,
+                        lag.max,
+                        na.action = na.contiguous, 
+                        theme = NULL,
+                        ...) {
+  if (!requireNamespace("ggplot2", quietly = TRUE)) {
+    stop("ggplot2 is needed for this function to work. Install it via install.packages(\"ggplot2\")", 
+      call. = FALSE)
+  }
+  else if (!requireNamespace("grid", quietly = TRUE)) {
+    stop("grid is needed for this function to work. Install it via install.packages(\"grid\")", 
+      call. = FALSE)
+  }
+  else {
+    if (NCOL(x) > 1) {
+      stop("ggtsdisplay is only for univariate time series")
+    }
+    plot.type <- match.arg(plot.type)
+    main <- deparse(substitute(x))
+    if (!is.ts(x)) {
+      x <- ts(x)
+    }
+    if (missing(lag.max)) {
+      lag.max <- round(min(max(10 * log10(length(x)), 
+        3 * frequency(x)), length(x)/3))
+    }
+    dots <- list(...)
+    if (is.null(dots$xlab)) {
+      dots$xlab <- ""
+    }
+    if (is.null(dots$ylab)) {
+      dots$ylab <- ""
+    }
+    labs <- match(c("xlab", "ylab", "main"), names(dots), 
+      nomatch = 0)
+    gridlayout <- matrix(c(1, 2, 1, 3), nrow = 2)
+    grid::grid.newpage()
+    grid::pushViewport(grid::viewport(layout = grid::grid.layout(nrow(gridlayout), 
+      ncol(gridlayout))))
+    matchidx <- as.data.frame(which(gridlayout == 1, arr.ind = TRUE))
+    tsplot <- do.call(ggplot2::autoplot, c(object = quote(x), 
+      dots[labs]))
+    if (points) {
+      tsplot <- tsplot + ggplot2::geom_point(size = 0.5)
+    }
+    if (smooth) {
+      tsplot <- tsplot + ggplot2::geom_smooth(method = "loess", 
+        se = FALSE)
+    }
+    if (is.null(tsplot$labels$title)) {
+      tsplot <- tsplot + ggplot2::ggtitle(main)
+    }
+    if (!is.null(theme)) {
+      tsplot <- tsplot + theme
+    }
+    print(tsplot, vp = grid::viewport(layout.pos.row = matchidx$row, 
+      layout.pos.col = matchidx$col))
+    acfplot <- do.call(ggAcf, c(x = quote(x), lag.max = lag.max, 
+      na.action = na.action, dots[-labs])) + ggplot2::ggtitle(NULL)
+    if (!is.null(theme)) {
+      acfplot <- acfplot + theme
+    }
+    if (plot.type == "partial") {
+      lastplot <- ggPacf(x, lag.max = lag.max, na.action = na.action) + 
+        ggplot2::ggtitle(NULL)
+      acfplotrange <- ggplot2::layer_scales(acfplot)$y$range$range
+      pacfplotrange <- ggplot2::layer_scales(lastplot)$y$range$range
+      yrange <- range(c(acfplotrange, pacfplotrange))
+      acfplot <- acfplot + ggplot2::ylim(yrange)
+      lastplot <- lastplot + ggplot2::ylim(yrange)
+    }
+    else if (plot.type == "histogram") {
+      lastplot <- gghistogram(x, add.normal = TRUE, add.rug = TRUE) + 
+        ggplot2::xlab(main)
+    }
+    else if (plot.type == "scatter") {
+      scatterData <- data.frame(y = x[2:NROW(x)], x = x[1:NROW(x) - 
+        1])
+      lastplot <- ggplot2::ggplot(ggplot2::aes(y = .data[["y"]], 
+        x = .data[["x"]]), data = scatterData) + ggplot2::geom_point() + 
+        ggplot2::labs(x = expression(Y[t - 1]), y = expression(Y[t]))
+    }
+    else if (plot.type == "spectrum") {
+      specData <-
+        spec.pgram(x, taper = 0, fast = FALSE, detrend = FALSE, plot = FALSE, na.action = na.action)
+      specData <- data.frame(spectrum = specData$spec, 
+        frequency = specData$freq)
+      lastplot <- ggplot2::ggplot(ggplot2::aes(y = .data[["spectrum"]], 
+        x = .data[["frequency"]]), data = specData) + 
+        ggplot2::geom_line() +
+        ggplot2::geom_point(size = 0.5)
+    }
+    if (!is.null(theme)) {
+      lastplot <- lastplot + theme
+    }
+    matchidx <- as.data.frame(which(gridlayout == 2, arr.ind = TRUE))
+    print(acfplot, vp = grid::viewport(layout.pos.row = matchidx$row, 
+      layout.pos.col = matchidx$col))
+    matchidx <- as.data.frame(which(gridlayout == 3, arr.ind = TRUE))
+    print(lastplot, vp = grid::viewport(layout.pos.row = matchidx$row, 
+      layout.pos.col = matchidx$col))
+  }
+}
+
+checkresiduals <- function(object, lag, test, plot = TRUE, ...) {
+  showtest <- TRUE
+  if (missing(test)) {
+    if (is.element("lm", class(object))) {
+      test <- "BG"
+    }
+    else {
+      test <- "LB"
+    }
+    showtest <- TRUE
+  }
+  else if (test != FALSE) {
+    test <- match.arg(test, c("LB", "BG"))
+    showtest <- TRUE
+  }
+  else {
+    showtest <- FALSE
+  }
+  if (is.element("ts", class(object)) | is.element("numeric", 
+    class(object))) {
+    residuals <- object
+    object <- list(method = "Missing")
+  }
+  else {
+    residuals <- residuals(object)
+  }
+  if (length(residuals) == 0L) {
+    stop("No residuals found")
+  }
+  if ("ar" %in% class(object)) {
+    method <- paste("AR(", object$order, ")", sep = "")
+  }
+  else if (!is.null(object$method)) {
+    method <- object$method
+  }
+  else if ("HoltWinters" %in% class(object)) {
+    method <- "HoltWinters"
+  }
+  else if ("StructTS" %in% class(object)) {
+    method <- "StructTS"
+  }
+  else {
+    method <- try(as.character(object), silent = TRUE)
+    if ("try-error" %in% class(method)) {
+      method <- "Missing"
+    }
+    else if (length(method) > 1 | base::nchar(method[1]) > 
+      50) {
+      method <- "Missing"
+    }
+  }
+  if (method == "Missing") {
+    main <- "Residuals"
+  }
+  else {
+    main <- paste("Residuals from", method)
+  }
+  if (plot) {
+    suppressWarnings(ggtsdisplay(residuals, main = main, ...))
+  }
+  if (is.element("forecast", class(object))) {
+    object <- object$model
+  }
+  if (is.null(object) | !showtest) {
+    return(invisible())
+  }
+  freq <- frequency(residuals)
+  if (inherits(object, "Arima") | test == "BG") {
+    df <- modeldf(object)
+  }
+  else {
+    df <- 0
+  }
+  if (missing(lag)) {
+    lag <- ifelse(freq > 1, 2 * freq, 10)
+    lag <- min(lag, round(length(residuals)/5))
+    lag <- max(df + 3, lag)
+  }
+  if (test == "BG") {
+    BGtest <- lmtest::bgtest(object, order = lag)
+    BGtest$data.name <- main
+    return(BGtest)
+  }
+  else {
+    LBtest <- Box.test(zoo::na.approx(residuals), fitdf = df, 
+      lag = lag, type = "Ljung")
+    LBtest$method <- "Ljung-Box test"
+    LBtest$data.name <- main
+    names(LBtest$statistic) <- "Q*"
+    print(LBtest)
+    cat(paste("Model df: ", df, ".   Total lags used: ", 
+      lag, "\n\n", sep = ""))
+    return(invisible(LBtest))
+  }
+}
+```
+
+# Периодограмма и автокорреляционная функция
+```{r}
+periodogram <- function(x) {
+  spec.pgram(
+    x,
+    taper = 0,
+    fast = FALSE,
+    detrend = FALSE,
+    plot = FALSE,
+    na.action = na.contiguous
+  )
+}
+
+ggperiodogram <- function(x, points = FALSE) {
+  sp <- periodogram(x)
+  spData <- data.frame(frequency = sp$freq, spectrum = sp$spec)
+  p <- ggplot(spData, aes(x = frequency, y = spectrum)) +
+    geom_line(na.rm = TRUE)
+  if (points)
+    p <- p + geom_point(na.rm = TRUE) 
+  p
+}
+
+theme_set(theme_bw())
+```
+
+```{r}
+em_harmonic <- function(N, freq, A = 1, a = 0, phase = 0) {
+  A * exp(a * (1:N)) * cos(2 * pi * (1:N) * freq + phase)
+}
+```
+
+
+## Искусственные данные
+Случай, когда частота попадает в решетку периодограммы:
+```{r}
+N <- 100
+ggtsdisplay(em_harmonic(N, 0.25))
+```
+
+Когда частота не попадает, наблюдается эффект растекания частоты:
+```{r}
+ggtsdisplay(em_harmonic(N, 0.255))
+```
+
+Белый шум:
+```{r}
+set.seed(1234)
+wn <- rnorm(N)
+ggtsdisplay(wn)
+```
+
+Красный шум:
+```{r}
+set.seed(1234)
+phi <- 0.7
+rn_start <- rnorm(1, sd = 1 / sqrt(1 - phi^2))
+rn <- arima.sim(list(ar = phi), N, n.start = 1, start.innov = rn_start)
+ggtsdisplay(rn)
+```
+
+При увеличении длины ряда значение периодограммы в частоте, соответствующей гармонике, увеличивается, а в частотах, соответствующих шуму, остаются теми же.
+```{r}
+set.seed(1234)
+N <- 200
+cos4 <- em_harmonic(N, 0.25)
+wn <- rnorm(N)
+
+per1 <- ggperiodogram(head(wn + cos4, 100))
+per2 <- ggperiodogram(wn + cos4)
+
+ggarrange(per1 + ylim(0, max(per2$data$spectrum)), per2, nrow = 2)
+```
+
+```{r}
+set.seed(1234)
+rn <- arima.sim(list(ar = phi), N, n.start = 1, start.innov = rn_start)
+
+per1 <- ggperiodogram(head(rn + cos4, 100))
+per2 <- ggperiodogram(rn + cos4)
+
+ggarrange(per1 + ylim(0, max(per2$data$spectrum)), per2, nrow = 2)
+```
+
+
+## Реальные данные
+### Яркость определенной звезды в полночь
+```{r}
+data("star")
+ggtsdisplay(star)
+```
+
+```{r}
+per <- ggperiodogram(star)
+per$data$frequency[order(per$data$spectrum, decreasing = TRUE)[1:2]]
+```
+
+На периодограмме есть два заметных пика. Эти пики приходятся на частоты $\omega_1=21/600 = 0.035$ и $\omega_2=25/600\approx0.04167$. Эти частоты соответствуют периодам $600/21\approx28.57$ и $24$ дня соответственно.
+
+
+### Использование розничных дебетовых карт в Исландии
+```{r}
+data("debitcards")
+autoplot(debitcards)
+```
+
+Похоже, что модель не аддитивная, прологарифмируем ее:
+```{r}
+debit_log <- log(debitcards)
+ggtsdisplay(debit_log)
+```
+
+Стало лучше. В ряде, очевидно, присутствует тренд. Удалим линейный тренд и построим периодограмму заного.
+```{r}
+debit_detrended <- tslm(debit_log ~ trend)$resid
+ggtsdisplay(debit_detrended)
+```
+
+По виду остатков видно, что у ряда нелинейный тренд.
+
+
+### Ежегодный минимальный уровень воды реки Нил
+```{r}
+data("NileMin")
+ggtsdisplay(NileMin)
+```
+
+
+# Линейные фильтры
+## АЧХ
+Построим амплитудно-частотную характеристику (АЧХ) для некотопых фильтров
+```{r}
+afc <- function(filter, freq, plot = TRUE, ...) {
+  k <- seq_along(filter) - 1
+  h <- function(o) sum(rev(filter) * exp(-2i * pi * k * o))
+  res <- list(freq = freq, afc = abs(sapply(freq, h)))
+  if (plot) {
+    plot(res$afc ~ res$freq, type = "l", xlab = "frequency", ylab = "AFC", ...)
+    invisible(res)
+  } else res
+}
+```
+
+Скользащее среднее:
+```{r}
+filt_ma <- rep(1, 12)
+freq <- seq(0, 0.5, 0.001)
+afc(filt_ma, freq)
+```
+
+Последовательная разность:
+```{r}
+filt_diff <- c(-1, 1)
+afc(filt_diff, freq)
+```
+
+Сезонная разность:
+```{r}
+filt_diff12 <- c(1, rep(0, 11), -1) 
+afc(filt_diff12, freq)
+```
+
+
+## Искусственные данные
+Применим сезонную разность. Периодограмма до применения фильтра:
+```{r}
+set.seed(1234)
+seasonality <- mapply(em_harmonic, N, c(1, 2) / 12, c(1.5, 1)) |> rowSums()
+x1 <- ts(seasonality + wn, frequency = 12)
+ggperiodogram(x1)
+```
+
+После применения фильтра видно, что значение периодограммы в точках, соответствующих периодам 12, 6, 4, 3, 2.4, 2 примерно нулевое.
+```{r}
+x1_deseason <- filter(x1, filt_diff12)
+ggperiodogram(x1_deseason)
+```
+
+Теперь рассмотрим ряд с экспоненциальным трендом и выделим его с помощью скользящего среднего:
+```{r}
+trend <- em_harmonic(N, 0, 5, 1 / N)
+x2 <- ts(trend + wn)
+xyplot(
+  cbind(x2, trend),
+  superpose = TRUE,
+  lwd = c(1, 2),
+  auto.key = list(text = c("Original", "Trend"), space = "top")
+)
+```
+
+```{r}
+#| include: false
+
+ts_filter <- function(ts,
+                      impulse,
+                      sides = 1,
+                      boundary = c("none", "pad", "renormalize")) {
+  # Choose boundary handling method
+  boundary <- match.arg(boundary)
+  T_len <- length(ts)
+  n <- length(impulse)
+  
+  # Define index offsets based on the filter type:
+  # For a causal (one-sided) filter, we use past values:
+  #   output[t] = sum_{k=0}^{n-1} impulse[k+1] * ts[t - k]
+  # For a centered (two-sided) filter, we center the impulse around t.
+  if (sides == 1) {
+    # Offsets: 0, -1, -2, ..., -(n-1)
+    idx_offsets <- -(0:(n - 1))
+  } else if (sides == 2) {
+    # Define the center index of the impulse.
+    center <- floor((n + 1) / 2)
+    # Offsets: -(center - 1), ..., 0, ..., (n - center)
+    idx_offsets <- -(center - 1) + (0:(n - 1))
+  } else {
+    stop("sides must be either 1 (one-sided) or 2 (two-sided)")
+  }
+  
+  # Create a matrix of indices for each time point.
+  # Each row t has indices: t + idx_offsets.
+  idx <- outer(1:T_len, idx_offsets, "+")  # dimensions: T_len x n
+  
+  if (boundary == "pad") {
+    # For "pad", replace indices outside [1, T_len] with the nearest boundary index.
+    idx_pad <- pmin(pmax(idx, 1), T_len)
+    X <- matrix(ts[idx_pad], nrow = T_len, ncol = n)
+    result <- as.vector(X %*% impulse)
+    
+  } else if (boundary == "none") {
+    # "none": if any part of the filter window is out-of-bound, set the result to NA.
+    valid <- (idx >= 1 & idx <= T_len)
+    idx_clipped <- pmin(pmax(idx, 1), T_len)
+    X <- matrix(ts[idx_clipped], nrow = T_len, ncol = n)
+    result <- as.vector(X %*% impulse)
+    # For rows with any invalid indices, assign NA.
+    invalid_rows <- which(rowSums(valid) < n)
+    if (length(invalid_rows) > 0) {
+      result[invalid_rows] <- NA
+    }
+    
+  } else if (boundary == "renormalize") {
+    valid <- (idx >= 1 & idx <= T_len)
+    idx_clipped <- pmin(pmax(idx, 1), T_len)
+    X <- matrix(ts[idx_clipped], nrow = T_len, ncol = n)
+    weights <- matrix(rep(impulse, each = T_len), nrow = T_len, ncol = n)
+    
+    # Check if the impulse sum is close to zero (differencing/high-pass filters)
+    impulse_sum <- sum(impulse)
+    use_absolute_sum <- abs(impulse_sum) < 1e-10  # Small threshold for numerical stability
+    
+    # Compute normalization factor
+    norm_factor <- if (use_absolute_sum) {
+      rowSums(abs(weights) * valid)  # Use sum of absolute values
+    } else {
+      rowSums(weights * valid)  # Use regular sum
+    }
+    
+    result <- numeric(T_len)
+    complete <- rowSums(valid) == n  # Fully valid rows
+    
+    if (any(complete)) {
+      result[complete] <- rowSums(X[complete, , drop = FALSE] *
+                                    weights[complete, , drop = FALSE])
+    }
+    
+    if (any(!complete)) {
+      valid_weights <- weights[!complete, , drop = FALSE] * valid[!complete, , drop = FALSE]
+      conv_sum <- rowSums(X[!complete, , drop = FALSE] * valid_weights)
+      conv_result <- ifelse(norm_factor[!complete] != 0, conv_sum / norm_factor[!complete], NA)
+      result[!complete] <- conv_result
+    }
+  }
+  
+  ts(result, start = time(ts)[1], frequency = frequency(ts))
+}
+```
+
+```{r}
+x2_ma <- ts_filter(x2, c(0.5, rep(1, 19), 0.5) / 20, 2, "renormalize")
+x2_resid <- x2 - x2_ma
+xyplot(
+  cbind(x2, trend, x2_ma),
+  superpose = TRUE,
+  col = c("grey", "red", "blue"),
+  lwd = c(1, 2, 2),
+  auto.key = list(text = c("Original", "Trend", "Moving average"), space = "top")
+)
+
+```
+
+Периодограмма остатков:
+```{r}
+ggperiodogram(x2_resid)
+```
+
+Оценим спектральную плотность с помощью скользащего среднего. Белый шум:
+```{r}
+spec_wn <- ggperiodogram(wn)
+spec_wn_ma <- ts_filter(
+  spec_wn$data$spectrum,
+  c(0.5, rep(1, 99), 0.5) / 100,
+  sides = 2,
+  boundary = "renormalize"
+)
+spec_wn + geom_line(aes(x = frequency, y = spec_wn_ma), colour = "blue")
+```
+
+Красный шум:
+```{r}
+spec_rn <- ggperiodogram(rn)
+spec_rn_ma <- ts_filter(
+  spec_rn$data$spec,
+  c(0.5, rep(1, 49), 0.5) / 50,
+  sides = 2,
+  boundary = "renormalize"
+)
+spec_rn + geom_line(aes(x = frequency, y = spec_rn_ma), colour = "blue")
+```
+
+
+## Реальные данные
+### Звездная величина
+С помощью сезонной разности выделим гармоники с периодами 29 и 24.
+```{r}
+star24 <- filter(star, c(1, rep(0, 28), -1))
+star29 <- filter(star, c(1, rep(0, 23), -1))
+
+ggarrange(autoplot(star24), autoplot(star29), nrow = 2)
+```
+
+Периодограммы остатков.
+```{r}
+per1 <- ggperiodogram(star24) + xlim(0.02, 0.06)
+per2 <- ggperiodogram(star29) + xlim(0.02, 0.06)
+ggarrange(per1, per2, nrow = 2)
+```
+
+
+### Дебетовые карты
+Выделим тренд с помощью скользащего среднего.
+```{r}
+debit_ma <- ts_filter(debit_log, c(0.5, rep(1, 23), 0.5) / 24, 2, "renormalize")
+xyplot(
+  cbind(debit_log, debit_ma),
+  superpose = TRUE,
+  lwd = c(1, 2),
+  auto.key = list(text = c("Original", "Moving average"), space = "top")
+)
+```
+
+Остатки:
+```{r}
+debit_detrend <- debit_log - debit_ma
+ggtsdisplay(debit_detrend)
+```
+
+В целом, тренд выделился хорошо. Теперь удалим сезонность и посмотрим на остатки:
+```{r}
+debit_resid <- filter(debit_detrend, c(1, rep(0, 11), -1))
+ggtsdisplay(debit_resid)
+```
+
+
+### Уровень воды реки Нил
+Оценим тренд скользащим средним.
+```{r}
+data("NileMin")
+NileMin_ma <- ts_filter(NileMin, c(0.5, rep(1, 99), 0.5) / 100, 2, "renormalize")
+xyplot(
+  cbind(NileMin, NileMin_ma),
+  superpose = TRUE,
+  lwd = c(1, 2),
+  auto.key = list(text = c("Original", "Moving average"), space = "top")
+)
+```
+
+Получился довольно неровный тренд.
+
+
+# SSA
+## Ранг
+Ранг гармоники с частотой $\omega\ne0.5$ равен $2$.
+```{r}
+N <- 71
+L <- 24
+x <- em_harmonic(N, 1 / 12)
+s <- ssa(x, L)
+plot(s)
+plot(s, "vectors")
+```
+
+Ранг гармоники с частотой $0.5$ равен $1$.
+```{r}
+x <- em_harmonic(N, 0.5)
+s <- ssa(x, L)
+plot(s)
+plot(s, "vectors")
+```
+
+Ранг полинома степени $p$ равен $p+1$.
+```{r}
+x <- (1:N) + (1:N)^2 + 1
+s <- ssa(x, L)
+plot(s)
+plot(s, "vectors")
+```
+
+
+## Разделимость
+Сумма гармоник с разными амплитудами и частотами сильно разделима. 
+```{r}
+A <- c(2, 1, 0.5, 0.2)
+freq <- c(1, 2, 3, 5) / 12
+x <- mapply(em_harmonic, N, freq, A) |> rowSums()
+s <- ssa(x, L)
+```
+
+```{r}
+plot(s, "vectors")
+```
+
+По двумерному графику левых сингулярных векторов можно заметить, что соответствующие целому периоду $T$ компоненты образовывают вершины правильного $T$-угольника (периоды $12$, $6$ и $4$), а компоненты, соответствующие периоду вида $p/q$ с взаимно простыми целыми $p$ и $q$, образуют вершины правильного $p$-угольника (период $12/5=2.4$) 
+```{r}
+plot(s, "paired", idx = c(1, 3, 5, 7))
+```
+
+```{r}
+plot(
+  reconstruct(s, list(S12 = 1:2, S6 = 3:4, S4 = 5:6, S2.4 = 7:8)),
+  plot.method = "xyplot"
+)
+```
+
+Сумма гармоник с разными частотами, но одинаковыми амплитудами слабо разделима, но не разделима по вкладам.
+```{r}
+x <- mapply(em_harmonic, N, freq[1:2]) |> rowSums()
+s <- ssa(x, L)
+plot(s, "vectors", idx = 1:4)
+```
+
+Левые сингулярные векторы смешались друг с другом. Это также видно по матрице $W$-корреляций:
+```{r}
+plot(wcor(s, 1:4))
+```
+
+Разделимости нет в случае суммы константы и экспоненты:
+```{r}
+x <- ts(em_harmonic(N, 0, a = 0.02) + 10)
+s <- ssa(x, L)
+plot(s)
+```
+
+Видно, что разделимость по вкладу есть. Посмотрим на восстановленные компоненты:
+```{r}
+plot(
+  reconstruct(s, list(1, 2)),
+  plot.method = "xyplot",
+  superpose = TRUE,
+  add.residuals = FALSE,
+  auto.key = list(space = "top")
+)
+```
+
+Константа явно не отделилась от экспоненты.
+
+
+## Искусственные данные
+```{r}
+s_x1 <- ssa(x1)
+plot(s_x1, "paired")
+```
+
+Выбираем первые $4$ компоненты.
+```{r}
+r_s1 <- reconstruct(s_x1, list(S12 = 1:2, S6 = 3:4))
+plot(r_s1, plot.method = "xyplot")
+```
+
+```{r}
+s_x2 <- ssa(x2)
+plot(s_x2, "vectors")
+```
+
+Убеждаемся, что ранг экспоненциального тренда равен $1$, выделим первую компоненту.
+```{r}
+r_x2 <- reconstruct(s_x2, list(Trend = 1))
+plot(
+  r_x2,
+  plot.method = "xyplot",
+  superpose = TRUE,
+  lwd = c(1, 2, 1),
+  auto.key = list(space = "top")
+)
+```
+
+
+## Реальные данные
+### Звездная величина
+```{r}
+s_star <- ssa(star)
+plot(s_star, "vectors")
+plot(s_star, "paired")
+```
+
+Судя по двумерным графикам, компоненты $2$ и $3$, $4$ и $5$, $7$ и $8$ соответствуют гармоникам. Компоненты $7$ и $8$ соответствуют периоду $4$, а период остальных гармоник оценить визуально затруднительно, поэтому воспользуемся `parestimate`. 
+```{r}
+parestimate(s_star, list(2:3, 4:5, 7:8))
+```
+
+Получили, что компоненты $2$ и $3$ соответствуют периоду $29$, а $4$ и $5$ --- периоду $24$. Также убедились, что период компонент $7$ и $8$, действительно, равен $4$. Также интересен период шестой компоненты, построим ее периодограмму:
+```{r}
+ggperiodogram(s_star$U[, 6])
+```
+
+Периодограмма имеет единственный пик в $\omega=0.5$, значит $6$-я компонента соответствует гармонике с периодом $2$.
+```{r}
+r_star <- reconstruct(s_star, groups = list(S29 = 2:3, S24 = 4:5, S2 = 6, S4 = 7:8))
+plot(r_star, plot.method = "xyplot")
+```
+
+
+### Дебетовые карты
+Возьмем длину окна, кратной всем периодам сезонности (т.е. $12$, $6$, $4$, $3$, $2.4$ и $2$).
+```{r}
+s_debit <- ssa(debit_log, 72)
+plot(s_debit, "vectors", idx = 1:20)
+```
+
+Похоже, тренду соответствуют компоненты $1$, $2$ и $5$. Но видно, что $5$-я компонента смешалась с гармоникой. Посмотрим на матрицу $W-корреляций$:
+```{r}
+plot(wcor(s_debit, 1:25))
+```
+
+Действительно, компоненты с $6$ по $11$ смешались друг с другом, $5$-я компонента смешалась вместе с ними. Также заметим, что $5$-я компонента коррелирует с компонентами $2$ и $17$, поэтому будем считать, что компоненты $1$, $2$ $5$ и $17$ соответствуют тренду.
+```{r}
+parestimate(s_debit, list(3:4, 10:11, 12:13, 14))
+```
+
+Комопоненты $3$ и $4$, $10$ и $11$, $12$ и $13$, и $14$ соответствуют гармоникам с периодами $6$, $4$, $3$ и $2$ соответственно. Поскольку комопонент сезонности всего $2 \cdot 5 + 1=11$, возьмем компоненты $3$, $4$ и с $6$ по $14$.
+```{r}
+r_debit <- reconstruct(s_debit, list(Trend = c(1:2, 5, 17), Seasonality = c(3:4, 6:14)))
+plot(r_debit, plot.method = "xyplot")
+```
+
+Взглянем на периодограмму остатков:
+```{r}
+ggperiodogram(resid(r_debit))
+```
+
+Как видим, сезонность успешно удалена.
+
+Сравним полученный с помощью SSA тренд с трендом, полученным с помощью скользащего среднего ранее.
+```{r}
+xyplot(
+  cbind(debit_log, r_debit$Trend, debit_ma),
+  superpose = TRUE,
+  col = c("grey", "red", "blue"),
+  lwd = c(1, 2, 2),
+  auto.key = list(text = c("Original", "SSA", "Moving average"), space = "top")
+)
+```
+
+Получили примерно тоже самое, но у SSA получился более точный тренд на концах.
+
+
+### Уровень реки Нил
+```{r}
+s_NileMin <- ssa(NileMin)
+plot(s_NileMin, "vectors")
+```
+
+Компоненты $2$ и $3$ соответствуют гармонике с некоторым периодом. Оценим его.
+```{r}
+parestimate(s_NileMin, list(2:3))
+```
+
+Период гармоники составлят примерно $238$ лет. Это достаточно большой период, поэтому включим компоненты $2$ и $3$ в тренд вместе с компонентой $1$.
+```{r}
+r_NileMin <- reconstruct(s_NileMin, list(Trend = 1:3))
+plot(
+  r_NileMin,
+  plot.method = "xyplot",
+  superpose = TRUE,
+  lwd = c(1, 2, 1),
+  auto.key = list(space = "top")
+)
+```
+
+Стравним полученный тренд со скользащим средним.
+```{r}
+xyplot(
+  cbind(NileMin, r_NileMin$Trend, NileMin_ma),
+  superpose = TRUE,
+  col = c("grey", "red", "blue"),
+  lwd = c(1, 2, 2),
+  auto.key = list(text = c("Original", "SSA", "Moving average"), space = "top")
+)
+```
+
+У SSA получился более плавный тренд.
+
+
+# Полиномиальная регрессия
+Оценим тренд реальных данных с помощью полиномиальной регрессии.
+```{r}
+N <- length(debit_log)
+debit_poly1 <- tslm(debit_log ~ poly(1:N, 1))
+debit_poly2 <- tslm(debit_log ~ poly(1:N, 2))
+debit_poly3 <- tslm(debit_log ~ poly(1:N, 5))
+
+xyplot(
+  cbind(debit_log, fitted(debit_poly1), fitted(debit_poly2), fitted(debit_poly3)),
+  superpose = TRUE,
+  col = c("grey", "red", "blue", "orange"),
+  lwd = c(1, 2, 2, 2),
+  auto.key = list(
+    text = c("Original", "lm", "poly(degree = 2)", "poly(degree = 3)"),
+    space = "top"
+  )
+)
+```
+
+Полином степени $3$ уже хорошо аппроксимирует данные.
+```{r}
+N <- length(NileMin)
+NileMin_poly5 <- tslm(NileMin ~ poly(1:N, 5))
+NileMin_poly10 <- tslm(NileMin ~ poly(1:N, 10))
+NileMin_poly15 <- tslm(NileMin ~ poly(1:N, 15))
+
+xyplot(
+  cbind(NileMin, fitted(NileMin_poly5), fitted(NileMin_poly10), fitted(NileMin_poly15)),
+  superpose = TRUE,
+  col = c("grey", "red", "blue", "orange"),
+  lwd = c(1, 2, 2, 2),
+  auto.key = list(
+    text = c("Original", "poly(degree = 5)", "poly(degree = 10)", "poly(degree = 15)"),
+    space = "top"
+  )
+)
+```
+
+Тут, похоже, подходит $10$ степень полинома.
+
+
+# Мультипликативная модель
+Сгенерируем ряд, удовлетворяющий мультипликативной модели:
+$$
+\mathsf{X}=\mathsf{T}(1 + \mathsf{S})(1 + \mathsf{N}).
+$$
+```{r}
+N <- 200
+trend_mult <- (1:N)^2 + 2 * (1:N) + 1
+x_mult <- ts(trend_mult * (1 + 0.5 * seasonality) * (1 + 0.25 * wn))
+xyplot(x_mult, main = "Multiplicative model")
+```
+
+Оценим тренд полиномиальной регрессией.
+```{r}
+lm_mult <- tslm(x_mult ~ poly(1:N, 2))
+ci_mult <- predict(lm_mult, data.frame(1:N), interval = "confidence")
+
+xyplot(
+  cbind(x_mult, ci_mult),
+  superpose = TRUE,
+  col = c("gray", "red", "blue", "blue"),
+  lty = c(1, 1, 2, 2),
+  auto.key = list(
+    text = c("Original", "Regression line", "95% confidence interval"),
+    space = "top"
+  )
+)
+```
+
+Теперь прологарифмируем ряд и оценим тренд.
+```{r}
+lm_add <- tslm(log(x_mult) ~ poly(1:N, 5))
+ci_add <- predict(lm_add, data.frame(1:N), interval = "confidence")
+
+xyplot(
+  cbind(log(x_mult), ci_add),
+  superpose = TRUE,
+  col = c("gray", "red", "blue", "blue"),
+  lty = c(1, 1, 2, 2),
+  auto.key = list(
+    text = c("ln(Original)", "Regression line", "95% confidence interval"),
+    space = "top"
+  )
+)
+```
+
+
+# Огибающая
+Модель:
+$$
+x_n=A(n)\cos(2\pi\omega n).
+$$
+```{r}
+N <- 200
+cos10 <- em_harmonic(N, 0.1)
+envelope <- em_harmonic(N, 0.004)
+
+x_envelope <- ts(envelope * cos10)
+xyplot(x_envelope)
+```
+
+Оценим огибающую $A(n)$. Возведем ряд в квадрат и домножим на $2$:
+
+$$
+y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
+$$
+
+```{r}
+y_envelope <- 2 * x_envelope^2
+xyplot(y_envelope)
+```
+
+Осталось только выделить тренд у полученного ряда.
+```{r}
+s_envelope <- ssa(y_envelope)
+plot(s_envelope, "vectors")
+```
+
+В нашем случае ранг $A^2(n)=\cos^2(2 \pi n / 500)$ равен 3.
+```{r}
+r_envelope <- reconstruct(s_envelope, list(Envelope = c(1, 4:5)))
+xyplot(
+  cbind(x_envelope, sqrt(r_envelope$Envelope)),
+  superpose = TRUE,
+  lwd = c(1, 2),
+  auto.key = list(text = c("Original", "Envelope"), space = "top"),
+  
+)
+```
+
+
+# Гетероскедастичный шум
+Построим доверительный интервал гетероскедастичного шума, задающегося формулой
+$$
+\mathsf{X}=\sigma(n)\varepsilon_n,
+$$
+где $\sigma(n)$ --- медленно меняющаяся функция, $\varepsilon_n$ --- белый гауссовский шум.
+
+Пусть дисперсия шума меняется линейно:
+```{r}
+set.seed(123)
+x <- ts((1:N) * wn)
+xyplot(x)
+```
+
+Возведем его в квадрат:
+```{r}
+y <- x^2
+xyplot(y)
+```
+
+Выделим тренд:
+```{r}
+s <- ssa(y)
+plot(s, "vectors")
+```
+
+```{r}
+r <- reconstruct(s, list(Trend = 1))
+plot(r, plot.method = "xyplot", lwd = c(1, 2), superpose = TRUE, add.residuals = FALSE)
+```
+
+Построим доверительный интервал $\pm2\sqrt{\hat\sigma^2(n)}$:
+```{r}
+xyplot(
+  cbind(x, 2 * sqrt(r$Trend), -2 * sqrt(r$Trend)),
+  superpose = TRUE,
+  col = c("#0072B2", "#E69F00", "#E69F00"),
+  lwd = c(1, 2, 2),
+  lty = c(1, 2, 2),
+  auto.key = list(text = c("Original", "Confidence interval"), space = "top")
+)
+```
+
+
+# LOESS и фильтр Hodrick-Prescott
+```{r}
+hp_debit <- hpfilter(debit_log, 100 * 12^2)
+loess_debit <- loess(debit_log ~ time(debit_log), span = 0.3, degree = 1, family = "gaussian")
+
+xyplot(
+  cbind(debit_log, hp_debit$trend, loess_debit$fitted),
+  superpose = TRUE,
+  col = c("grey", "red", "blue"),
+  lwd = c(1, 2, 2),
+  auto.key = list(text = c("Original", "HP filter", "LOESS"))
+)
+```
+
+```{r}
+hp_NileMin <- hpfilter(NileMin, 1e+5)
+loess_NileMin <- loess(NileMin ~ time(NileMin), span = 0.15, degree = 1, family = "gaussian")
+
+xyplot(
+  cbind(NileMin, hp_NileMin$trend, loess_NileMin$fitted),
+  superpose = TRUE,
+  col = c("grey", "red", "blue"),
+  lwd = c(1, 2, 2),
+  auto.key = list(text = c("Original", "HP filter", "LOESS"))
+)
+```
+
+Для обоих рядов получили примерно одинаковые тренды, однако у фильтра HP получилась более плавная кривая.
+
+
+# Преобразование Бокса-Кокса
+Применим преобразование на нелогарифмированных данных о использовании дебетовых картах.
+```{r}
+(lambda_debit <- BoxCox.lambda(debitcards))
+```
+
+Значение $\lambda$ ближе к $0$, чем к $1$, что говорит о мультипликативности модели. После применения преобразования видна стабилизация дисперсии ряда:
+```{r}
+debit_transformed <- BoxCox(debitcards, lambda_debit)
+ggarrange(
+  autoplot(debitcards, main = "Original"),
+  autoplot(debit_transformed, main = "Transformed"),
+  nrow = 2
+)
+```
+
+# SSA с процекцией
+Известно, что линейный тренд неотделим от косинуса.
+```{r}
+N <- 71
+x <- (1:N) + em_harmonic(N, freq[1], 10)
+s <- ssa(x, L)
+plot(s, "vectors")
+```
+
+Видно, что $2$-я компонента смешалась с $4$-й. С помощью SSA с проекцией можно добиться разделимости.
+```{r}
+s_proj <- ssa(x, L, column.projector = 1, row.projector = 1)
+plot(s_proj, "vectors")
+plot(wcor(s_proj, 1:4))
+```
+
+Действительно, теперь $1$ и $2$ компоненты соответствуют тренду, а $3$ и $4$ --- гармонике.
+```{r}
+plot(
+  reconstruct(s_proj, list(Trend = 1:2, Harmonic = 3:4)),
+  plot.method = "xyplot",
+  superpose = TRUE,
+  add.residuals = FALSE
+)
+```
+
+
+# Автоматическая группировка в SSA
+С помощью `grouping.auto` автоматически выделим тренд и сезонную составляющую:
+```{r}
+delta <- 1 / length(debit_log)
+
+freq.bins <- lapply(1:6 / 12, function(freq) freq + c(-delta, delta))
+freq.bins[[7]] <- 0.02
+names(freq.bins) <- c(paste0("S", 1:6), "Trend")
+
+(g_debit <- grouping.auto(s_debit, freq.bins = freq.bins, threshold = 0.5))
+plot(reconstruct(s_debit, g_debit), add.residuals = FALSE, plot.method = "xyplot")
+```
+
+
+# DerivSSA
+Воспользуемся `fossa`, чтобы улучшить разделимость гармонических компонент. Ряд с огибающей:
+```{r}
+xyplot(x_envelope)
+```
+
+```{r}
+plot(s_envelope, "vectors")
+plot(wcor(s_envelope, 1:10))
+```
+
+$4$-я компонента смешалась со $2$-й $3$-й. Применяем `fossa`:
+```{r}
+fs_envelope <- fossa(s_envelope, 1:9)
+plot(fs_envelope, "vectors")
+plot(wcor(fs_envelope, 1:10))
+```
+
+```{r}
+rfs_envelope <- reconstruct(fs_envelope, list(Envelope = c(7:9))) 
+xyplot(
+  cbind(x_envelope, sqrt(r_envelope$Envelope), sqrt(rfs_envelope$Envelope)),
+  superpose = TRUE,
+  lwd = c(1, 2, 2),
+  auto.key = list(text = c("Original", "Basic SSA", "DerivSSA"), space = "top")
+)
+```
+
+Получили практически идеальную огибающую.
+
+Теперь перейдем к данным по использованию дебетовых карт. Как было до:
+```{r}
+plot(s_debit, "vectors", idx = 1:20)
+plot(wcor(s_debit, 1:20))
+```
+
+После:
+```{r}
+fs_debit <- fossa(s_debit, 5:11)
+plot(fs_debit, "vectors", idx = 1:20)
+plot(wcor(fs_debit, 1:20))
+```
+
+Видно, что разделимость усилилась, теперь приступим к автоматической группировке:
+```{r}
+g_debit <- grouping.auto(fs_debit, freq.bins = freq.bins, threshold = 0.5)
+plot(reconstruct(fs_debit, g_debit), add.residuals = FALSE, plot.method = "xyplot")
+```
+
+
+# Линейно-рекурентные формулы
+```{r}
+#| include: false
+
+group_roots <- function(roots, tol) {
+  real <- abs(Im(roots)) < tol
+  roots[real] <- Re(roots[real])
+
+  groups <- list()
+  used <- logical(length(roots))
+  for (i in seq_along(roots)) {
+    if (!used[i] && Im(roots[i]) >= 0) {
+      close <- abs(roots - roots[i]) < tol
+      groups[[length(groups) + 1]] <- list(
+        root = mean(roots[close]),
+        multiplicity = sum(close)
+      )
+      used[close] <- TRUE
+    }
+  }
+  
+  dplyr::bind_rows(groups)
+}
+
+find_lrr <- function(x, groups, tol = 1e-6, L = rank + 1) {
+  rank <- length(unlist(groups))
+  len <- if (L > rank + 1) length(x) else rank + 1
+
+  s <- ssa(x, L, svd.method = "svd")
+  
+  par <- parestimate(s, groups)
+  par <- lapply(par, unclass) |> dplyr::bind_rows()
+  grouped <- group_roots(par$roots, tol)
+  
+  roots <- grouped$root
+  multiplicities <- grouped$multiplicity
+  k <- length(roots)
+  
+  periods <- 2 * pi / Arg(roots)
+  
+  o <- order(abs(periods), decreasing = TRUE)
+  periods <- periods[o]
+  roots <- roots[o]
+  moduli <- Mod(roots)
+  multiplicities <- multiplicities[o]
+  
+  vars <- list()
+  for (i in seq_along(multiplicities)) {
+    mult <- multiplicities[i]
+    period <- periods[i]
+    if (is.infinite(period)) {
+      vars[[i]] <- sapply(0:(mult - 1), function(m) (1:len)^m * moduli[i]^(1:len))
+    } else if (period == 2) {
+      vars[[i]] <- sapply(0:(mult - 1), function(m) (1:len)^m * (-moduli[i])^(1:len))
+    } else {
+      vars[[i]] <- 
+        cbind(
+          sapply(0:(mult - 1), function(m) (1:len)^m * moduli[i]^(1:len) * cos(2 * pi * (1:len) / period)),
+          sapply(0:(mult - 1), function(m) (1:len)^m * moduli[i]^(1:len) * sin(2 * pi * (1:len) / period))
+        )
+    }
+  }
+  vars <- do.call(cbind, vars)
+
+  lm <- lm(x[1:len] ~ 0 + ., data = data.frame(vars))
+  coefs <- coef(lm)
+  
+  rank_trend <- sum(multiplicities[periods == Inf])
+  rank_periodic <- sum(multiplicities[!(periods %in% c(Inf, 2))])
+  rank_cos2 <- rank - rank_trend - rank_periodic
+  
+  result <- list()
+  if (rank_trend > 0) {
+    trend <- list()
+    mult <- multiplicities[periods == Inf]
+    idx <- 1
+    for (i in seq_along(mult)) {
+      trend[[i]] <- cbind(
+        coef = coefs[idx:(idx + mult[i] - 1)],
+        modulus = moduli[i],
+        order = 1:mult[i]
+      )
+      idx <- idx + mult[i]
+    }
+    trend <- do.call(rbind, trend) |> data.frame(row.names = NULL)
+    
+    cat(
+      "Trend components:\n",
+      "coef * modulus^n * n^(order-1)\n"
+    )
+    print(trend)
+    
+    result$trend <- trend
+  }
+  
+  if (rank_periodic + rank_cos2 > 0) {
+    periodics <- list()
+    mult <- multiplicities[periods != Inf]
+    mod <- moduli[periods != Inf]
+    p <- periods[periods != Inf]
+    idx <- rank_trend + 1
+    for (i in seq_along(mult)) {
+      if (p[i] == 2) {
+        coefs_component <- coefs[idx:(idx + mult[i] - 1)]
+        phases_component <- 0
+        rank <- 1
+      } else {
+        coef_mat <- matrix(
+          coefs[idx:(idx + 2 * mult[i] - 1)],
+          nrow = 2,
+          byrow = TRUE
+        )
+        coefs_component <- sqrt(colSums(coef_mat^2))
+        phases_component <- atan2(-coef_mat[2, ], coef_mat[1, ])
+        rank <- 2
+      }
+      
+       periodics[[i]] <- cbind(
+         period = p[i],
+         phase = phases_component,
+         coef = coefs_component,
+         modulus = mod[i],
+         order = 1:mult[i]
+       )
+       idx <- idx + mult[i] * rank
+    }
+    periodics <- do.call(rbind, periodics) |> data.frame(row.names = NULL) 
+  
+    if (rank_trend > 0)
+      cat("\n")
+
+    cat(
+      "Periodic components:\n",
+      "coef * modulus^n * n^(order-1) * cos(2 * pi * n / period + phase)\n"
+    )
+    print(periodics)
+
+    result$periodics <- periodics
+  }
+
+  result$series <- x
+  invisible(result)
+}
+
+generate_lrr <- function(x, n) {
+  t <- 1:n
+  trend <- periodics <- 0
+  x1 <- x$trend
+  x2 <- x$periodics
+  if (!is.null(x1)) {
+    for (i in 1:nrow(x1)) {
+      trend <- trend + x1$coef[i] * x1$modulus[i]^t * t^(x1$order[i] - 1)
+    }
+  }
+  if (!is.null(x2))
+    for (i in 1:nrow(x2)) {
+      periodics <- periodics + 
+        x2$coef[i] * x2$modulus[i]^t * t^(x2$order[i] - 1) * cos(2 * pi * t / x2$period[i] + x2$phase[i])
+    }
+  
+  result <- trend + periodics
+  if (is.ts(x$series))
+    result <- ts(result, start = start(x$series), frequency = frequency(x$series))
+  
+  result
+}
+
+```
+
+
+## Ряды без шума
+Возьмем $x_n=\cos(2 \pi n/ 5 + \pi / 4)$.
+```{r}
+N <- 99
+signal2 <- ts(em_harmonic(N, freq = 0.2, phase = pi / 4))
+find_lrr(signal2, list(1:2))
+```
+
+Теперь возьмем многочлен $2$ степени: $x_n=n^2+2n+5$.
+```{r}
+find_lrr((1:N)^2 + 2 * (1:N) + 5, list(1:3), tol = 1e-4)
+```
+
+Последовательность Фибоначчи: $F_n=F_{n-1}+F_{n-2}$.
+```{r}
+l <- find_lrr(c(1, 1, 2, 3), list(1:2))
+```
+
+Получили явную формулу:
+
+$$
+F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\right)}{\sqrt{5}}.
+$$
+
+Первые $10$ чисел Фибоначчи:
+```{r}
+generate_lrr(l, 10)
+```
+
+Сигнал ранга $7$ с кратными корнями: $x_n=0.1n\cdot e^{0.025 n}\cos(2 \pi n / 10 + \pi / 2) + n\cdot e^{0.02n} + 10\cdot(-1)^n$:
+```{r}
+signal7 <- mapply(em_harmonic, N, c(0.1, 0, 0.5), c(0.1, 1, 10), c(0.025, 0.02, 0), c(pi / 2, 0, 0))
+signal7 <- ts((1:N) * rowSums(signal7[, 1:2]) + signal7[, 3])
+xyplot(signal7)
+```
+
+```{r}
+find_lrr(signal7, list(1:7))
+```
+
+
+## Ряды с шумом
+Теперь добавим во временные ряды шум.
+```{r}
+set.seed(1234)
+x1 <- ts(signal2 + rnorm(N))
+L <- (N + 1) %/% 2
+plot(ssa(x1, L), "vectors")
+```
+
+```{r}
+l <- find_lrr(x1, list(1:2), L = L)
+signal2_est <- generate_lrr(l, N)
+xyplot(
+  cbind(x1, signal2, signal2_est),
+  superpose = TRUE,
+  lwd = c(2, 1, 1),
+  col = c("grey", "blue", "red"),
+  auto.key = list(
+    text = c("Original", "Signal", "LRR"),
+    space = "top"
+  )
+)
+```
+
+
+```{r}
+set.seed(1234)
+x2 <- signal7 + rnorm(N, sd = 3)
+s <- ssa(x2, L)
+plot(s, "vectors")
+```
+
+
+```{r}
+l <- find_lrr(x2, list(1:7), 1e-1, L = L)
+signal7_est <- generate_lrr(l, N)
+xyplot(
+  cbind(x2, signal7, signal7_est),
+  superpose = TRUE,
+  lwd = c(2, 1, 1),
+  col = c("grey", "blue", "red"),
+  auto.key = list(
+    text = c("Original", "Signal", "LRR"),
+    space = "top"
+  )
+)
+```
+
+
+## Итерации Cadzow
+```{r}
+cadz <- cadzow(ssa(x1, L), rank = 2)
+l <- find_lrr(cadz, list(1:2))
+xyplot(
+  cbind(x1, signal2, signal2_est, generate_lrr(l, N)),
+  superpose = TRUE,
+  lwd = c(2, 1, 1, 1),
+  col = c("grey", "blue", "red", "orange"),
+  auto.key = list(
+    text = c("Original", "Signal", "LRR", "LRR (Cadzow)"),
+    space = "top"
+  )
+)
+```
+
+```{r}
+cadz <- cadzow(s, rank = 7)
+l <- find_lrr(cadz, list(1:7), 1e-1)
+xyplot(
+  cbind(x2, signal7, signal7_est, generate_lrr(l, N)),
+  superpose = TRUE,
+  lwd = c(2, 1, 1, 1),
+  col = c("grey", "blue", "red", "orange"),
+  auto.key = list(
+    text = c("Original", "Signal", "LRR", "LRR (Cadzow)"),
+    space = "top"
+  )
+)
+```
+
+
+## Реальные данные
+### Звездная величина
+```{r}
+lrr_star <- find_lrr(star, list(1:8), L = 300)
+xyplot(
+  cbind(star, generate_lrr(lrr_star, length(star))),
+  superpose = TRUE,
+  lwd = c(2, 1),
+  col = c("grey", "red"),
+  auto.key = list(
+    text = c("Original", "LRR"),
+    space = "top"
+  )
+)
+```
+
+
+### Дебетовые карты
+```{r}
+lrr_debit <- find_lrr(debit_log, list(1:17), L = 72)
+xyplot(
+  cbind(debit_log, generate_lrr(lrr_debit, length(debit_log))),
+  superpose = TRUE,
+  lwd = c(2, 1),
+  col = c("grey", "red"),
+  auto.key = list(
+    text = c("Original", "LRR"),
+    space = "top"
+  )
+)
+```
+
+
+### Уровень воды реки Нил
+```{r}
+lrr_NileMin <- find_lrr(NileMin, list(1:3), L = 332)
+xyplot(
+  cbind(NileMin, generate_lrr(lrr_NileMin, length(NileMin))),
+  superpose = TRUE,
+  col = c("grey", "red"),
+  lwd = c(1, 2),
+  auto.key = list(
+    text = c("Original", "LRR"),
+    space = "top"
+  )
+)
+```
+
+
+# Iterative O-SSA
+Возьмем сумму трех гармоник с близкими частотами.
+```{r}
+set.seed(1234)
+x <- ts(mapply(em_harmonic, N, c(0.1, 0.092, 0.15), c(3, 1, 2)) |> rowSums() + 0.1 * rnorm(N))
+s <- ssa(x)
+plot(s, "vectors")
+```
+
+По графикам собственных векторов видно, что пара $5$-$6$ смешалась с остальными компонентами. Вклад у компонент разный, поэтому DerivSSA тут не поможет. Применим `iossa`:
+```{r}
+ios <- iossa(s, list(1:2, 3:4, 5:6))
+plot(ios, "vectors")
+owcor(ios)
+```
+
+```{r}
+plot(
+  reconstruct(ios, ios$iossa.groups),
+  plot.method = "xyplot",
+  add.original = FALSE,
+  add.residuals = FALSE
+)
+```
+
+Можно вспомнить пример с экспонентой и константой:
+```{r}
+x <- ts(em_harmonic(N, 0, a = 0.02) + 10)
+s <- ssa(x)
+ios <- iossa(s, list(1, 2))
+plot(
+  reconstruct(ios, ios$iossa.groups),
+  plot.method = "xyplot",
+  superpose = TRUE,
+  add.residuals = FALSE,
+  auto.key = list(space = "top")
+)
+```
+
+
+# Esprit-motivated O-SSA
+Усилим разделимость с помощью `eossa_new`.
+
+
+## Модельные примеры
+Возьмем те же ряды, на которых проверяли IOSSA.
+```{r}
+x <- ts(mapply(em_harmonic, N, c(0.1, 0.092, 0.15), c(3, 1, 2)) |> rowSums() + 0.1 * rnorm(N))
+s <- ssa(x)
+eos <- eossa_new(s, 1:6, clust_type = "distance")
+plot(reconstruct(eos, eos$iossa.groups), plot.method = "xyplot")
+```
+
+```{r}
+x <- ts(em_harmonic(N, 0, a = 0.02) + 10)
+s <- ssa(x)
+eos <- eossa_new(s, 1:2, clust_type = "distance")
+plot(
+  reconstruct(eos, eos$iossa.groups),
+  plot.method = "xyplot",
+  superpose = TRUE,
+  add.residuals = FALSE,
+  auto.key = list(space = "top")
+)
+```
+
+
+## Реальные данные
+### Дебетовые карты
+```{r}
+plot(s_debit, "vectors", idx = 1:20)
+eos_debit <- eossa_new(s_debit, c(1:14, 17), clust_type = "distance")
+plot(eos_debit, "vectors", idx = 1:20)
+```
+
+```{r}
+reos_debit <-  reconstruct(eos_debit, list(Trend = 1:4, Seasonality = c(5:14, 17)))
+plot(
+  reos_debit,
+  plot.method = "xyplot",
+  add.residuals = FALSE
+)
+```
+
+Сравним тренд с тренд и сезонность, полученных с помощью EOSSA и Basic SSA:
+```{r}
+xyplot(
+  cbind(debit_log, r_debit$Trend, reos_debit$Trend),
+  superpose = TRUE,
+  lwd = c(1, 2, 2),
+  auto.key = list(text = c("Original", "SSA", "EOSSA"), space = "top")
+)
+```
+
+```{r}
+xyplot(
+  cbind(r_debit$Seasonality, reos_debit$Seasonality),
+  superpose = TRUE,
+  auto.key = list(text = c("SSA", "EOSSA"), space = "top")
+)
+```
+
+
+# Classical seasonal decomposition и STL
+Выкинем из ряда два периода, это понадобится нам в дальнейшем при проверке качества прогноза. Будем сравнивать результаты `decompose` и `stl` с результатом EOSSA.
+```{r}
+debit_trunc <- window(debitcards, start = c(2000, 1), end = c(2010, 12))
+s_debit1 <- ssa(debit_trunc, L = 48, svd.method = "svd", neig = 100)
+plot(s_debit1, "vectors", idx = 1:20)
+eos_debit1 <- eossa_new(s_debit1, list(1:14), "distance")
+plot(eos_debit1, "vectors", idx = 1:20)
+reos_debit1 <- reconstruct(eos_debit1, list(Trend = 1:3, Seasonality = 4:14))
+plot(reos_debit1, plot.method = "xyplot")
+```
+
+```{r}
+checkresiduals(reos_debit1)
+```
+
+```{r}
+decompose_debit <- decompose(debit_trunc, type = "multiplicative")
+plot(decompose_debit)
+```
+
+```{r}
+checkresiduals(decompose_debit$random)
+```
+
+```{r}
+stl_debit <- stl(debit_trunc, s.window = 7, s.degree = 1, t.degree = 1, l.degree = 1)
+plot(stl_debit)
+```
+
+```{r}
+checkresiduals(stl_debit$time.series[, 3])
+```
+
+Гипотеза об белом шуме остатков отверглась для всех трех методов. Это говорит нам, что либо в ряде еще что-то осталось, либо остатки не описываются моделью белого шума. Сравним выделенные тренды:
+```{r}
+xyplot(
+  cbind(debit_trunc, reos_debit1$Trend, decompose_debit$trend, stl_debit$time.series[, 2]),
+  superpose = TRUE,
+  col = c("grey", "red", "blue", "orange"),
+  lwd = 2,
+  auto.key = list(
+    text = c("Original", "EOSSA", "Classical Seasonal Decomposition", "STL"),
+    space = "top"
+  )
+)
+```
+
+
+# SSA прогнозирование
+Посмотрим на корни ЛРФ:
+```{r}
+(par <- parestimate(eos_debit1, list(1:14)))
+```
+Все корни по модулю больше $1$, значит предсказание будет идти вверх. Убедимся в этом:
+```{r}
+rfor_debit <- rforecast(eos_debit1, list(1:14), len = 24)
+vfor_debit <- vforecast(eos_debit1, list(1:14), len = 24)
+rmse_rfor <- sqrt(mean((debitcards - rfor_debit)^2))
+rmse_vfor <-  sqrt(mean((debitcards - vfor_debit)^2))
+xyplot(
+  cbind(tail(debitcards, 36), rfor_debit, vfor_debit),
+  superpose = TRUE,
+  lwd = c(1, 2, 2),
+  lty = c(1, 1, 2),
+  col = c("black", "red", "blue"),
+  auto.key = list(
+    text = c(
+      "Original",
+      sprintf("rforecast (RMSE: %.2f)", rmse_rfor),
+      sprintf("vforecast (RMSE: %.2f)", rmse_vfor)
+    ),
+    space = "top"
+  )
+)
+```
+
+Теперь предскажем отдельно тренд:
+```{r}
+rfor_debit_trend <- rforecast(eos_debit1, list(1:3), len = 24)
+vfor_debit_trend <- vforecast(eos_debit1, list(1:3), len = 24)
+xyplot(
+  cbind(debitcards, rfor_debit_trend, vfor_debit_trend),
+  superpose = TRUE,
+  lwd = c(1, 2, 2),
+  lty = c(1, 1, 2),
+  col = c("black", "red", "blue"),
+  auto.key = list(text = c("Original", "rforecast", "vforecast"), space = "top")
+)
+```
+
+Только сезонность:
+```{r}
+rfor_debit_season <- rforecast(eos_debit1, list(4:14),  24)
+vfor_debit_season <- vforecast(eos_debit1, list(4:14), 24)
+xyplot(
+  cbind(reos_debit1$Seasonality, rfor_debit_season, vfor_debit_season),
+  superpose = TRUE,
+  lwd = c(1, 2, 2),
+  lty = c(1, 1, 2),
+  col = c("black", "red", "blue"),
+  auto.key = list(text = c("Original", "rforecast", "vforecast"), space = "top")
+)
+```
+
+
+## Бутстреп-доверительные/предсказательные интервалы
+Поскольку рекурентный прогноз оказался точнее, будем использовать именно его. Доверительные интервалы:
+```{r}
+for_conf <- forecast(s_debit1, list(1:14), 24, interval = "conf")
+autoplot(for_conf, 50, ylab = "") +
+  autolayer(tail(debitcards, 50), color = "black") 
+```
+
+Предсказательные интервалы:
+```{r}
+for_pred <- forecast(s_debit1, list(1:14), 24, interval = "pred")
+autoplot(for_pred, 50, ylab = "") +
+  autolayer(tail(debitcards, 50), color = "black") 
+```
+
+Предсказательные интервалы, как и ожидалось, шире, чем доверительные. Заметим, что для доберительных интервалов некоторые предсказанные значения лежат ниже нижней границы. Можно делать прогноз тоже бутстрепом:
+```{r}
+for_bootstrap <- forecast(s_debit1, list(1:14), 24, interval = "conf", only.intervals = FALSE)
+autoplot(for_bootstrap, 50, ylab = "") +
+  autolayer(tail(debitcards, 50), color = "black") 
+```
+
+
+# Работа с пропусками
+```{r}
+debit_gapped <- debitcards
+window(debit_gapped, start = c(2004, 1), end = c(2005, 12)) <- NA
+debit_gap <- window(debitcards, start = c(2004, 1), end = c(2005, 12))
+xyplot(debit_gapped)
+```
+
+## Sequential
+```{r}
+s <- ssa(debit_gapped, 48, svd.method = "svd")
+eos <- eossa_new(s, list(1:15), "distance", delta = 1e-5)
+
+g_original <- gapfill(eos, list(1:2), "original", "sequential")
+g_reconstructed <- gapfill(eos, list(1:2), "reconstructed", "sequential")
+
+xyplot(
+  cbind(debit_gap, g_original, g_reconstructed),
+  superpose = TRUE, 
+  col = c("grey", "blue", "red"),
+  lwd = 2,
+  auto.key = list(
+    text = c(
+      "Gap",
+      "gapfill(base = \"original\")",
+      "gapfill(base = \"reconstructed\")"
+    ),
+    space = "top"
+  )
+)
+```
+
+
+## Simultaneous
+```{r}
+g_original <- gapfill(eos, list(1:2), "original", "simultaneous")
+g_reconstructed <- gapfill(eos, list(1:2), "reconstructed", "simultaneous")
+
+xyplot(
+  cbind(debitcards, debit_gap, g_original, g_reconstructed),
+  superpose = TRUE, 
+  col = c("black", "grey", "blue", "red"),
+  lwd = 2,
+  auto.key = list(
+    text = c(
+      "Original",
+      "Gap",
+      "gapfill(base = \"original\")",
+      "gapfill(base = \"reconstructed\")"
+    ),
+    space = "top"
+  )
+)
+```
+
+
+## Iterative
+```{r}
+ig0 <- igapfill(eos, list(1:2), base = "original")
+ig <- igapfill(eos, list(1:2), base = "reconstructed")
+xyplot(
+  cbind(debitcards, ig0, ig),
+  superpose = TRUE,
+  col = c("grey", "blue", "red"),
+  lwd = 2,
+  auto.key = list(
+    text = c("Gap", "igapfill(base = \"original\")", "igapfill(base = \"reconstructed\")"),
+    space = "top"
+  )
+)
+```
+
+## Сравнение gapfill и igapfill
+### Ряд без тренда
+```{r}
+N <- length(signal2)
+xyplot(signal2)
+```
+
+```{r}
+# Setting up parallel computing
+plan(multisession, workers = min(15, detectCores() - 1))
+registerDoFuture()
+```
+
+```{r}
+gapfill_errors <- function(gap_idx, signal, groups, M = 500, ...) {
+  mse <- foreach(i = 1:M) %dorng% {
+    x_gap <- signal + rnorm(N, ...)
+    x_gap[gap_idx] <- NA
+    s <- ssa(x_gap, 30, svd.method = "svd")
+    
+    g_seq <- gapfill(s, groups, method = "sequential")
+    g_simult <- gapfill(s, groups, method = "simultaneous")
+    ig <- igapfill(s, groups, maxiter = 50)
+    
+    mse.gapfill_seq <- mean((g_seq[gap_idx] - signal[gap_idx])^2)
+    mse.gapfill_simult <- mean((g_simult[gap_idx] - signal[gap_idx])^2)
+    mse.igapfill <- mean((ig[gap_idx] - signal[gap_idx])^2)
+    
+    c(mse.gapfill_seq, mse.gapfill_simult, mse.igapfill)
+  }
+  mse <- do.call(rbind, mse) |> data.frame()
+  colnames(mse) <- c("gapfill_seq", "gapfill_simult", "igapfill")
+  tidyr::pivot_longer(mse, cols = 1:3)
+}
+```
+
+"Дырка" в середине:
+```{r}
+set.seed(123)
+mse_center1 <- gapfill_errors(45:54, signal2, list(1:2), sd = 0.5)
+ggplot(mse_center1) + geom_boxplot(aes(name, value)) + xlab("") + ylab("MSE")
+```
+
+"Дырка" в конце:
+```{r}
+set.seed(123)
+mse_end1 <- gapfill_errors(90:99, signal2, list(1:2), sd = 0.5)
+ggplot(mse_end1) + geom_boxplot(aes(name, value)) + xlab("") + ylab("MSE")
+```
+
+### Ряд c трендом
+```{r}
+xyplot(signal7)
+```
+
+"Дырка" в середине:
+```{r}
+set.seed(123)
+mse_center2 <- gapfill_errors(45:54, signal7, list(1:7), sd = 0.5)
+ggplot(mse_center2) + geom_boxplot(aes(x = name, y = value)) + xlab("") + ylab("MSE")
+```
+
+"Дырка" в конце:
+```{r}
+set.seed(123)
+mse_end2 <- gapfill_errors(90:99, signal7, list(1:7), sd = 0.5)
+ggplot(mse_end2) + geom_boxplot(aes(x = name, y = value)) + xlab("") + ylab("MSE") + scale_y_log10()
+```
+
+Посмотрим, как выглядит заполнение пропусков (которое, вообще говоря, в данном случае является прогнозом):
+```{r}
+set.seed(123)
+x2 <- x2_gap <- signal7 + rnorm(N, sd = 0.5)
+x2_gap[90:99] <- NA
+s <- ssa(x2_gap, 30, svd.method = "svd")
+plot(s, "vectors", idx = 1:10)
+```
+
+```{r}
+g <- gapfill(s, list(1:7), method = "simultaneous")
+ig <- igapfill(s, list(1:7), maxiter = 50)
+
+xyplot(
+  cbind(x2, g, ig),
+  superpose = TRUE,
+  lwd = 2,
+  col = c("grey", "red", "blue"),
+  auto.key = list(text = c("Original", "gapfill", "igapfill"), space = "top")
+)
+```
+
+
+# Процессы ARIMA
+## Модельные ряды
+```{r}
+set.seed(123)
+x <- arima.sim(list(ar = c(0.7, 0.1)), n = 10000)
+ggtsdisplay(x, plot.type = "partial", lag.max = 50, main = "ARIMA(2, 0, 0)")
+```
+
+У PACF значимых лагов $2$, что соответствует реальной модели.
+```{r}
+(fit <- Arima(x, c(2, 0, 0), include.mean = FALSE))
+```
+
+Модель также правильно определяется автоматически: 
+```{r}
+(auto_fit <- auto.arima(x, stationary = TRUE, stepwise = FALSE))
+```
+
+```{r}
+set.seed(123)
+x <- arima.sim(list(ar = c(0.5, -0.1), ma = c(0.9)), n = 10000)
+ggtsdisplay(x, plot.type = "partial", lag.max = 50, main = "ARIMA(2, 0, 1)")
+```
+
+По ACF и PACF похоже на модель MA(3).
+```{r}
+(fit <- Arima(x, c(0, 0, 3), include.mean = FALSE))
+checkresiduals(fit, lag.max = 50)
+```
+
+Применим `auto.arima`:
+```{r}
+auto_fit <- auto.arima(
+  x,
+  max.p = 3, max.q = 3,
+  stationary = TRUE,
+  trace = TRUE,
+  stepwise = FALSE,
+  approximation = FALSE,
+  allowmean = FALSE
+)
+auto_fit
+```
+Модель подобралась верно, хотя значения IC для моделей довольно близки ($28368.06$ и $28364.4$).
+
+```{r}
+set.seed(123)
+x <- arima.sim(list(ar = 0.4), n = 1000) + 0.1
+x <- cumsum(x)
+ggtsdisplay(x, "partial", main = "ARIMA(1, 1, 0) with drift")
+```
+
+Очевидно, что ряд нестационарный. Проверим ряд на наличие единичного корня:
+```{r}
+adf.test(x)
+```
+Продифференцируем ряд:
+```{r}
+ggtsdisplay(diff(x), "partial")
+```
+
+Похоже на AR(1) процесс. Подберем лучшую модель:
+```{r}
+(auto_fit <- auto.arima(x, stepwise = FALSE, approximation = FALSE))
+checkresiduals(auto_fit)
+```
+
+Сделаем прогноз:
+```{r}
+autoplot(forecast(auto_fit), include = 200, ylab = "")
+```
+
+
+
+```{r}
+ts1 <- as.ts(read.csv("./data/ts1.txt", sep=""))
+ggtsdisplay(ts1, plot.type = "partial", lag.max = 50)
+```
+
+PACF обрывается после лага $2$, а ACF экспоненциально затухает. Поэтому выберем модель ARIMA(2, 0, 0).
+```{r}
+(fit <- Arima(ts1, c(2, 0, 0)))
+checkresiduals(fit, lag.max = 50)
+```
+
+Теперь автоматически подберем модель:
+```{r}
+auto_fit <- auto.arima(
+  ts1,
+  max.p = 3, max.q = 3,
+  stationary = TRUE,
+  trace = TRUE,
+  stepwise = FALSE,
+  approximation = FALSE
+)
+auto_fit
+checkresiduals(auto_fit, lag.max = 50)
+```
+
+По IC модель ARIMA(2, 0, 0) заметно хуже ARIMA(3, 0, 1). Предскажем несколько точек:
+```{r}
+autoplot(forecast(auto_fit), include = 200, ylab = "")
+```
+
+На самом деле, истинная модель ARIMA(1, 0, 1), которая по IC близка к ARIMA(2, 0, 0).
+```{r}
+ts5 <- as.ts(read.csv("./data/ts5.txt", sep=""))
+ggtsdisplay(ts5, plot.type = "partial", lag.max = 50)
+```
+
+Похоже на модель ARIMA(3, 0, 2).
+```{r}
+(fit <- Arima(ts5, c(3, 0, 2), include.mean = FALSE))
+checkresiduals(fit, lag.max = 50)
+```
+
+```{r}
+auto_fit <- auto.arima(
+  ts5,
+  max.p = 3, max.q = 2,
+  stationary = TRUE,
+  stepwise = FALSE,
+  trace = TRUE,
+  approximation = FALSE
+)
+auto_fit
+checkresiduals(auto_fit, lag.max = 50)
+```
+
+Наилучшей моделью оказалась ARIMA(3, 0, 0), которая и является истинной.
+```{r}
+autoplot(forecast(auto_fit), include = 200, ylab = "")
+```
+
+
+## Реальные данные
+### Уровень воды реки Нил
+```{r}
+rNile <- resid(r_NileMin)
+ggtsdisplay(rNile, plot.type = "partial", lag.max = 50)
+```
+
+Автоматически подберем модель:
+```{r}
+rNile_train <- head(rNile, -10)
+rNile_test <- tail(rNile, 10)
+model_Nile <- auto.arima(
+  rNile_train,
+  stationary = TRUE,
+  stepwise = FALSE,
+  approximation = FALSE
+)
+model_Nile
+checkresiduals(model_Nile, lag.max = 50)
+```
+
+Нет основания отвергать гипотезу о белом шуме, поэтому сделаем прогноз: 
+```{r}
+autoplot(forecast(model_Nile), include = 200, ylab = "") +
+  autolayer(rNile_test, colour = FALSE)
+```
+
+
+### Дебетовые карты
+```{r}
+rdebit <- resid(reos_debit)
+ggtsdisplay(rdebit, plot.type = "partial", lag.max = 50)
+```
+
+```{r}
+model_debit <- auto.arima(
+  rdebit,
+  stationary = TRUE,
+  seasonal = FALSE,
+  stepwise = FALSE,
+  approximation = FALSE
+)
+model_debit
+checkresiduals(model_debit, lag.max = 50)
+```
+
+Нулевая гипотеза о белом шуме отверглась, видимо, в ряде осталась часть сезонности. Предсказывать неверную модель смысла нет.
