@@ -200,6 +200,7 @@ window.Quarto = {
   <li><a href="#модельные-ряды" id="toc-модельные-ряды" class="nav-link" data-scroll-target="#модельные-ряды"><span class="header-section-number">19.1</span> Модельные ряды</a></li>
   <li><a href="#реальные-данные-5" id="toc-реальные-данные-5" class="nav-link" data-scroll-target="#реальные-данные-5"><span class="header-section-number">19.2</span> Реальные данные</a></li>
   </ul></li>
+  <li><a href="#seasonal-arima" id="toc-seasonal-arima" class="nav-link" data-scroll-target="#seasonal-arima"><span class="header-section-number">20</span> Seasonal ARIMA</a></li>
   </ul>
 </nav>
 </nav>
@@ -266,9 +267,7 @@ window.Quarto = {
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (points)</span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">na.rm =</span> <span class="cn">TRUE</span>) </span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  p</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>em_harmonic <span class="ot">&lt;-</span> <span class="cf">function</span>(N, freq, <span class="at">A =</span> <span class="dv">1</span>, <span class="at">a =</span> <span class="dv">0</span>, <span class="at">phase =</span> <span class="dv">0</span>) {</span>
@@ -284,7 +283,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-5-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -295,7 +294,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-6-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -308,7 +307,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-7-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -323,7 +322,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-8-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -342,7 +341,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-9-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -358,7 +357,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-10-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -374,7 +373,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-11-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -396,7 +395,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-13-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -408,7 +407,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-14-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -420,7 +419,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-15-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -435,7 +434,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-16-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -467,7 +466,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-18-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -479,7 +478,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-19-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -491,7 +490,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-20-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -508,7 +507,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-21-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -520,7 +519,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-22-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -538,7 +537,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-23-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -556,7 +555,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-25-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -567,7 +566,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-26-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -585,7 +584,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-27-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -603,7 +602,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-28-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -622,7 +621,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-29-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -635,7 +634,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-30-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -655,7 +654,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-31-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -667,7 +666,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-32-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -683,7 +682,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-33-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -704,7 +703,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-34-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -727,7 +726,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-35-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -735,7 +734,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-35-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-35-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -748,7 +747,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-36-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -756,7 +755,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-36-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-36-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -769,7 +768,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-37-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -777,7 +776,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-37-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-37-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -797,7 +796,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-39-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -808,7 +807,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-40-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -821,7 +820,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-41-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -834,7 +833,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-42-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -845,7 +844,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-43-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -858,7 +857,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-44-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -875,7 +874,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-45-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -890,7 +889,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-46-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -902,7 +901,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-47-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -913,7 +912,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-48-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -931,7 +930,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-49-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -947,7 +946,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-50-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -955,7 +954,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-50-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-50-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -986,7 +985,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-52-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -998,7 +997,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-53-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1013,7 +1012,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-54-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1024,7 +1023,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-55-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1060,7 +1059,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-57-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1071,7 +1070,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-58-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1089,7 +1088,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-59-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1104,7 +1103,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-60-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1131,7 +1130,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-62-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1148,7 +1147,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-63-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1179,7 +1178,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-64-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1204,7 +1203,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-65-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1224,7 +1223,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-66-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1247,7 +1246,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-67-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1270,7 +1269,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-68-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1291,7 +1290,7 @@ x_n=A(n)\cos(2\pi\omega n).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-69-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1306,7 +1305,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-70-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1318,7 +1317,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-71-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1336,7 +1335,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-72-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1355,7 +1354,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-73-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1367,7 +1366,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-74-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1379,7 +1378,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-75-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1390,7 +1389,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-76-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1408,7 +1407,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-77-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1430,7 +1429,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-78-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1449,7 +1448,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-79-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-79-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1476,7 +1475,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-81-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1493,7 +1492,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-82-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1505,7 +1504,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-83-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-83-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1513,7 +1512,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-83-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-83-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1529,7 +1528,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-84-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-84-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1682,7 +1681,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-85-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-85-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1696,7 +1695,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-86-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-86-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1706,7 +1705,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-87-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-87-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1714,7 +1713,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-87-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-87-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1726,7 +1725,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-88-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-88-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1734,7 +1733,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-88-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-88-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1750,7 +1749,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-89-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-89-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1762,7 +1761,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-90-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-90-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1770,7 +1769,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-90-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-90-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1782,7 +1781,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-91-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-91-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1790,7 +1789,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-91-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-91-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1802,7 +1801,7 @@ y_n = 2x_n^2=2 A(n)\cos^2(2\pi n/10)=A^2(n) + A^2(n)\cos(2 \pi n / 10).
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-92-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-92-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1870,7 +1869,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-98-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-98-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1904,7 +1903,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-100-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-100-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1931,7 +1930,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-101-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-101-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1944,7 +1943,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-102-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-102-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1979,7 +1978,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-103-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-103-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2009,7 +2008,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-104-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-104-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2044,7 +2043,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-105-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-105-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2083,7 +2082,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-106-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-106-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2125,7 +2124,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-107-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-107-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2159,7 +2158,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-108-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-108-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2178,7 +2177,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-109-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-109-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2194,51 +2193,42 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-110-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-110-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="fu">owcor</span>(ios)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>##               F1            F2           F3
-## F1  1.0000000000 -0.0001457248 -0.002313441
-## F2 -0.0001457248  1.0000000000  0.001223087
-## F3 -0.0023134411  0.0012230871  1.000000000
-## attr(,"class")
-## [1] "wcor.matrix"</code></pre>
-</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb147-2"><a href="#cb147-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reconstruct</span>(ios, ios<span class="sc">$</span>iossa.groups),</span>
-<span id="cb147-3"><a href="#cb147-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.method =</span> <span class="st">"xyplot"</span>,</span>
-<span id="cb147-4"><a href="#cb147-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.original =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb147-5"><a href="#cb147-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.residuals =</span> <span class="cn">FALSE</span></span>
-<span id="cb147-6"><a href="#cb147-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb145-2"><a href="#cb145-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reconstruct</span>(ios, ios<span class="sc">$</span>iossa.groups),</span>
+<span id="cb145-3"><a href="#cb145-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.method =</span> <span class="st">"xyplot"</span>,</span>
+<span id="cb145-4"><a href="#cb145-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.original =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb145-5"><a href="#cb145-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.residuals =</span> <span class="cn">FALSE</span></span>
+<span id="cb145-6"><a href="#cb145-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-111-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-111-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Можно вспомнить пример с экспонентой и константой:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">em_harmonic</span>(N, <span class="dv">0</span>, <span class="at">a =</span> <span class="fl">0.02</span>) <span class="sc">+</span> <span class="dv">10</span>)</span>
-<span id="cb148-2"><a href="#cb148-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
-<span id="cb148-3"><a href="#cb148-3" aria-hidden="true" tabindex="-1"></a>ios <span class="ot">&lt;-</span> <span class="fu">iossa</span>(s, <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb148-4"><a href="#cb148-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb148-5"><a href="#cb148-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reconstruct</span>(ios, ios<span class="sc">$</span>iossa.groups),</span>
-<span id="cb148-6"><a href="#cb148-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.method =</span> <span class="st">"xyplot"</span>,</span>
-<span id="cb148-7"><a href="#cb148-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb148-8"><a href="#cb148-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.residuals =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb148-9"><a href="#cb148-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">space =</span> <span class="st">"top"</span>)</span>
-<span id="cb148-10"><a href="#cb148-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">em_harmonic</span>(N, <span class="dv">0</span>, <span class="at">a =</span> <span class="fl">0.02</span>) <span class="sc">+</span> <span class="dv">10</span>)</span>
+<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
+<span id="cb146-3"><a href="#cb146-3" aria-hidden="true" tabindex="-1"></a>ios <span class="ot">&lt;-</span> <span class="fu">iossa</span>(s, <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb146-4"><a href="#cb146-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb146-5"><a href="#cb146-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reconstruct</span>(ios, ios<span class="sc">$</span>iossa.groups),</span>
+<span id="cb146-6"><a href="#cb146-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.method =</span> <span class="st">"xyplot"</span>,</span>
+<span id="cb146-7"><a href="#cb146-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb146-8"><a href="#cb146-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.residuals =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb146-9"><a href="#cb146-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">space =</span> <span class="st">"top"</span>)</span>
+<span id="cb146-10"><a href="#cb146-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-112-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-112-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2251,33 +2241,33 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <h2 data-number="15.1" class="anchored" data-anchor-id="модельные-примеры"><span class="header-section-number">15.1</span> Модельные примеры</h2>
 <p>Возьмем те же ряды, на которых проверяли IOSSA.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">mapply</span>(em_harmonic, N, <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.092</span>, <span class="fl">0.15</span>), <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">|&gt;</span> <span class="fu">rowSums</span>() <span class="sc">+</span> <span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">rnorm</span>(N))</span>
-<span id="cb149-2"><a href="#cb149-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
-<span id="cb149-3"><a href="#cb149-3" aria-hidden="true" tabindex="-1"></a>eos <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">clust_type =</span> <span class="st">"distance"</span>)</span>
-<span id="cb149-4"><a href="#cb149-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">reconstruct</span>(eos, eos<span class="sc">$</span>iossa.groups), <span class="at">plot.method =</span> <span class="st">"xyplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">mapply</span>(em_harmonic, N, <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.092</span>, <span class="fl">0.15</span>), <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">|&gt;</span> <span class="fu">rowSums</span>() <span class="sc">+</span> <span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">rnorm</span>(N))</span>
+<span id="cb147-2"><a href="#cb147-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
+<span id="cb147-3"><a href="#cb147-3" aria-hidden="true" tabindex="-1"></a>eos <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">clust_type =</span> <span class="st">"distance"</span>)</span>
+<span id="cb147-4"><a href="#cb147-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">reconstruct</span>(eos, eos<span class="sc">$</span>iossa.groups), <span class="at">plot.method =</span> <span class="st">"xyplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-113-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-113-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">em_harmonic</span>(N, <span class="dv">0</span>, <span class="at">a =</span> <span class="fl">0.02</span>) <span class="sc">+</span> <span class="dv">10</span>)</span>
-<span id="cb150-2"><a href="#cb150-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
-<span id="cb150-3"><a href="#cb150-3" aria-hidden="true" tabindex="-1"></a>eos <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">clust_type =</span> <span class="st">"distance"</span>)</span>
-<span id="cb150-4"><a href="#cb150-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb150-5"><a href="#cb150-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reconstruct</span>(eos, eos<span class="sc">$</span>iossa.groups),</span>
-<span id="cb150-6"><a href="#cb150-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.method =</span> <span class="st">"xyplot"</span>,</span>
-<span id="cb150-7"><a href="#cb150-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb150-8"><a href="#cb150-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.residuals =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb150-9"><a href="#cb150-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">space =</span> <span class="st">"top"</span>)</span>
-<span id="cb150-10"><a href="#cb150-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">em_harmonic</span>(N, <span class="dv">0</span>, <span class="at">a =</span> <span class="fl">0.02</span>) <span class="sc">+</span> <span class="dv">10</span>)</span>
+<span id="cb148-2"><a href="#cb148-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
+<span id="cb148-3"><a href="#cb148-3" aria-hidden="true" tabindex="-1"></a>eos <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">clust_type =</span> <span class="st">"distance"</span>)</span>
+<span id="cb148-4"><a href="#cb148-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb148-5"><a href="#cb148-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reconstruct</span>(eos, eos<span class="sc">$</span>iossa.groups),</span>
+<span id="cb148-6"><a href="#cb148-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.method =</span> <span class="st">"xyplot"</span>,</span>
+<span id="cb148-7"><a href="#cb148-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb148-8"><a href="#cb148-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.residuals =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb148-9"><a href="#cb148-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">space =</span> <span class="st">"top"</span>)</span>
+<span id="cb148-10"><a href="#cb148-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-114-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-114-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2288,16 +2278,16 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <section id="дебетовые-карты-3" class="level3" data-number="15.2.1">
 <h3 data-number="15.2.1" class="anchored" data-anchor-id="дебетовые-карты-3"><span class="header-section-number">15.2.1</span> Дебетовые карты</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s_debit, <span class="st">"vectors"</span>, <span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s_debit, <span class="st">"vectors"</span>, <span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-115-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-115-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>eos_debit <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s_debit, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>, <span class="dv">17</span>), <span class="at">clust_type =</span> <span class="st">"distance"</span>)</span>
-<span id="cb152-2"><a href="#cb152-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(eos_debit, <span class="st">"vectors"</span>, <span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a>eos_debit <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s_debit, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>, <span class="dv">17</span>), <span class="at">clust_type =</span> <span class="st">"distance"</span>)</span>
+<span id="cb150-2"><a href="#cb150-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(eos_debit, <span class="st">"vectors"</span>, <span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>## Warning in .contribution(x, idx, ...): Elementary matrices are not F-orthogonal
 ## (max F-cor is -0.193). Contributions can be irrelevant</code></pre>
@@ -2305,52 +2295,52 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-115-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-115-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>reos_debit <span class="ot">&lt;-</span>  <span class="fu">reconstruct</span>(eos_debit, <span class="fu">list</span>(<span class="at">Trend =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">Seasonality =</span> <span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">14</span>, <span class="dv">17</span>)))</span>
-<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb154-3"><a href="#cb154-3" aria-hidden="true" tabindex="-1"></a>  reos_debit,</span>
-<span id="cb154-4"><a href="#cb154-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.method =</span> <span class="st">"xyplot"</span>,</span>
-<span id="cb154-5"><a href="#cb154-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.residuals =</span> <span class="cn">FALSE</span></span>
-<span id="cb154-6"><a href="#cb154-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>reos_debit <span class="ot">&lt;-</span>  <span class="fu">reconstruct</span>(eos_debit, <span class="fu">list</span>(<span class="at">Trend =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">Seasonality =</span> <span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">14</span>, <span class="dv">17</span>)))</span>
+<span id="cb152-2"><a href="#cb152-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb152-3"><a href="#cb152-3" aria-hidden="true" tabindex="-1"></a>  reos_debit,</span>
+<span id="cb152-4"><a href="#cb152-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.method =</span> <span class="st">"xyplot"</span>,</span>
+<span id="cb152-5"><a href="#cb152-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.residuals =</span> <span class="cn">FALSE</span></span>
+<span id="cb152-6"><a href="#cb152-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-116-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-116-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Сравним тренд с тренд и сезонность, полученных с помощью EOSSA и Basic SSA:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb155-2"><a href="#cb155-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(debit_log, r_debit<span class="sc">$</span>Trend, reos_debit<span class="sc">$</span>Trend),</span>
-<span id="cb155-3"><a href="#cb155-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb155-4"><a href="#cb155-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="cb155-5"><a href="#cb155-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"SSA"</span>, <span class="st">"EOSSA"</span>), <span class="at">space =</span> <span class="st">"top"</span>)</span>
-<span id="cb155-6"><a href="#cb155-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
+<span id="cb153-2"><a href="#cb153-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(debit_log, r_debit<span class="sc">$</span>Trend, reos_debit<span class="sc">$</span>Trend),</span>
+<span id="cb153-3"><a href="#cb153-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb153-4"><a href="#cb153-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb153-5"><a href="#cb153-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"SSA"</span>, <span class="st">"EOSSA"</span>), <span class="at">space =</span> <span class="st">"top"</span>)</span>
+<span id="cb153-6"><a href="#cb153-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-117-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-117-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb156-2"><a href="#cb156-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(r_debit<span class="sc">$</span>Seasonality, reos_debit<span class="sc">$</span>Seasonality),</span>
-<span id="cb156-3"><a href="#cb156-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb156-4"><a href="#cb156-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="fu">c</span>(<span class="st">"SSA"</span>, <span class="st">"EOSSA"</span>), <span class="at">space =</span> <span class="st">"top"</span>)</span>
-<span id="cb156-5"><a href="#cb156-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
+<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(r_debit<span class="sc">$</span>Seasonality, reos_debit<span class="sc">$</span>Seasonality),</span>
+<span id="cb154-3"><a href="#cb154-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb154-4"><a href="#cb154-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="fu">c</span>(<span class="st">"SSA"</span>, <span class="st">"EOSSA"</span>), <span class="at">space =</span> <span class="st">"top"</span>)</span>
+<span id="cb154-5"><a href="#cb154-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-118-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-118-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2362,18 +2352,18 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <h1 data-number="16"><span class="header-section-number">16</span> Classical seasonal decomposition и STL</h1>
 <p>Выкинем из ряда два периода, это понадобится нам в дальнейшем при проверке качества прогноза. Будем сравнивать результаты <code>decompose</code> и <code>stl</code> с результатом EOSSA.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb157"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1" aria-hidden="true" tabindex="-1"></a>debit_trunc <span class="ot">&lt;-</span> <span class="fu">window</span>(debitcards, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">1</span>), <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">12</span>))</span>
-<span id="cb157-2"><a href="#cb157-2" aria-hidden="true" tabindex="-1"></a>s_debit1 <span class="ot">&lt;-</span> <span class="fu">ssa</span>(debit_trunc, <span class="at">L =</span> <span class="dv">48</span>, <span class="at">svd.method =</span> <span class="st">"svd"</span>, <span class="at">neig =</span> <span class="dv">100</span>)</span>
-<span id="cb157-3"><a href="#cb157-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s_debit1, <span class="st">"vectors"</span>, <span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a>debit_trunc <span class="ot">&lt;-</span> <span class="fu">window</span>(debitcards, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">1</span>), <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">12</span>))</span>
+<span id="cb155-2"><a href="#cb155-2" aria-hidden="true" tabindex="-1"></a>s_debit1 <span class="ot">&lt;-</span> <span class="fu">ssa</span>(debit_trunc, <span class="at">L =</span> <span class="dv">48</span>, <span class="at">svd.method =</span> <span class="st">"svd"</span>, <span class="at">neig =</span> <span class="dv">100</span>)</span>
+<span id="cb155-3"><a href="#cb155-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s_debit1, <span class="st">"vectors"</span>, <span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-119-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-119-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a>eos_debit1 <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="st">"distance"</span>)</span>
-<span id="cb158-2"><a href="#cb158-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(eos_debit1, <span class="st">"vectors"</span>, <span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a>eos_debit1 <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="st">"distance"</span>)</span>
+<span id="cb156-2"><a href="#cb156-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(eos_debit1, <span class="st">"vectors"</span>, <span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>## Warning in .contribution(x, idx, ...): Elementary matrices are not F-orthogonal
 ## (max F-cor is -0.00759). Contributions can be irrelevant</code></pre>
@@ -2381,26 +2371,26 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-119-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-119-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb160"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a>reos_debit1 <span class="ot">&lt;-</span> <span class="fu">reconstruct</span>(eos_debit1, <span class="fu">list</span>(<span class="at">Trend =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">Seasonality =</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">14</span>))</span>
-<span id="cb160-2"><a href="#cb160-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(reos_debit1, <span class="at">plot.method =</span> <span class="st">"xyplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a>reos_debit1 <span class="ot">&lt;-</span> <span class="fu">reconstruct</span>(eos_debit1, <span class="fu">list</span>(<span class="at">Trend =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">Seasonality =</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">14</span>))</span>
+<span id="cb158-2"><a href="#cb158-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(reos_debit1, <span class="at">plot.method =</span> <span class="st">"xyplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-119-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-119-3.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb161"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(reos_debit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb159"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb159-1"><a href="#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(reos_debit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-120-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-120-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2415,22 +2405,22 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb163"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a>decompose_debit <span class="ot">&lt;-</span> <span class="fu">decompose</span>(debit_trunc, <span class="at">type =</span> <span class="st">"multiplicative"</span>)</span>
-<span id="cb163-2"><a href="#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(decompose_debit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb161"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="#cb161-1" aria-hidden="true" tabindex="-1"></a>decompose_debit <span class="ot">&lt;-</span> <span class="fu">decompose</span>(debit_trunc, <span class="at">type =</span> <span class="st">"multiplicative"</span>)</span>
+<span id="cb161-2"><a href="#cb161-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(decompose_debit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-121-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-121-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(decompose_debit<span class="sc">$</span>random)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb162"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb162-1"><a href="#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(decompose_debit<span class="sc">$</span>random)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-122-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-122-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2445,22 +2435,22 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a>stl_debit <span class="ot">&lt;-</span> <span class="fu">stl</span>(debit_trunc, <span class="at">s.window =</span> <span class="dv">7</span>, <span class="at">s.degree =</span> <span class="dv">1</span>, <span class="at">t.degree =</span> <span class="dv">1</span>, <span class="at">l.degree =</span> <span class="dv">1</span>)</span>
-<span id="cb166-2"><a href="#cb166-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stl_debit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a>stl_debit <span class="ot">&lt;-</span> <span class="fu">stl</span>(debit_trunc, <span class="at">s.window =</span> <span class="dv">7</span>, <span class="at">s.degree =</span> <span class="dv">1</span>, <span class="at">t.degree =</span> <span class="dv">1</span>, <span class="at">l.degree =</span> <span class="dv">1</span>)</span>
+<span id="cb164-2"><a href="#cb164-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(stl_debit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-123-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-123-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb167"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(stl_debit<span class="sc">$</span>time.series[, <span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb165"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb165-1"><a href="#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(stl_debit<span class="sc">$</span>time.series[, <span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-124-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-124-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2476,20 +2466,14 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 </div>
 <p>Гипотеза об белом шуме остатков отверглась для всех трех методов. Это говорит нам, что либо в ряде еще что-то осталось, либо остатки не описываются моделью белого шума. Сравним выделенные тренды:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb169"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb169-1"><a href="#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb169-2"><a href="#cb169-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(debit_trunc, reos_debit1<span class="sc">$</span>Trend, decompose_debit<span class="sc">$</span>trend, stl_debit<span class="sc">$</span>time.series[, <span class="dv">2</span>]),</span>
-<span id="cb169-3"><a href="#cb169-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb169-4"><a href="#cb169-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"grey"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"orange"</span>),</span>
-<span id="cb169-5"><a href="#cb169-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb169-6"><a href="#cb169-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(</span>
-<span id="cb169-7"><a href="#cb169-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"EOSSA"</span>, <span class="st">"Classical Seasonal Decomposition"</span>, <span class="st">"STL"</span>),</span>
-<span id="cb169-8"><a href="#cb169-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">space =</span> <span class="st">"top"</span></span>
-<span id="cb169-9"><a href="#cb169-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb169-10"><a href="#cb169-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb167"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(debitcards, <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb167-2"><a href="#cb167-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(reos_debit1<span class="sc">$</span>Trend, <span class="at">series =</span> <span class="st">"EOSSA"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb167-3"><a href="#cb167-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(decompose_debit<span class="sc">$</span>trend, <span class="at">series =</span> <span class="st">"decompose"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb167-4"><a href="#cb167-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(stl_debit<span class="sc">$</span>time.series[, <span class="dv">2</span>], <span class="at">series =</span> <span class="st">"STL"</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-125-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-125-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2499,7 +2483,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <h1 data-number="17"><span class="header-section-number">17</span> SSA прогнозирование</h1>
 <p>Посмотрим на корни ЛРФ:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a>(par <span class="ot">&lt;-</span> <span class="fu">parestimate</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb168"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1" aria-hidden="true" tabindex="-1"></a>(par <span class="ot">&lt;-</span> <span class="fu">parestimate</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>##    period     rate   |    Mod     Arg  |     Re        Im
 ##     2.995   0.008159 |  1.00819   2.10 | -0.50711   0.87138
@@ -2520,49 +2504,46 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 </div>
 <p>Все корни по модулю больше <span class="math inline">\(1\)</span>, значит предсказание будет идти вверх. Убедимся в этом:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a>rfor_debit <span class="ot">&lt;-</span> <span class="fu">rforecast</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="at">len =</span> <span class="dv">24</span>)</span>
-<span id="cb172-2"><a href="#cb172-2" aria-hidden="true" tabindex="-1"></a>vfor_debit <span class="ot">&lt;-</span> <span class="fu">vforecast</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="at">len =</span> <span class="dv">24</span>)</span>
-<span id="cb172-3"><a href="#cb172-3" aria-hidden="true" tabindex="-1"></a>rmse_rfor <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((debitcards <span class="sc">-</span> rfor_debit)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb172-4"><a href="#cb172-4" aria-hidden="true" tabindex="-1"></a>rmse_vfor <span class="ot">&lt;-</span>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((debitcards <span class="sc">-</span> vfor_debit)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb172-5"><a href="#cb172-5" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb172-6"><a href="#cb172-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="fu">tail</span>(debitcards, <span class="dv">36</span>), rfor_debit, vfor_debit),</span>
-<span id="cb172-7"><a href="#cb172-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb172-8"><a href="#cb172-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="cb172-9"><a href="#cb172-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb172-10"><a href="#cb172-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>),</span>
-<span id="cb172-11"><a href="#cb172-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(</span>
-<span id="cb172-12"><a href="#cb172-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">c</span>(</span>
-<span id="cb172-13"><a href="#cb172-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Original"</span>,</span>
-<span id="cb172-14"><a href="#cb172-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sprintf</span>(<span class="st">"rforecast (RMSE: %.2f)"</span>, rmse_rfor),</span>
-<span id="cb172-15"><a href="#cb172-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sprintf</span>(<span class="st">"vforecast (RMSE: %.2f)"</span>, rmse_vfor)</span>
-<span id="cb172-16"><a href="#cb172-16" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb172-17"><a href="#cb172-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">space =</span> <span class="st">"top"</span></span>
-<span id="cb172-18"><a href="#cb172-18" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb172-19"><a href="#cb172-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a>rfor_debit <span class="ot">&lt;-</span> <span class="fu">rforecast</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="at">len =</span> <span class="dv">24</span>)</span>
+<span id="cb170-2"><a href="#cb170-2" aria-hidden="true" tabindex="-1"></a>vfor_debit <span class="ot">&lt;-</span> <span class="fu">vforecast</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="at">len =</span> <span class="dv">24</span>)</span>
+<span id="cb170-3"><a href="#cb170-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb170-4"><a href="#cb170-4" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(<span class="fu">tail</span>(debitcards, <span class="dv">36</span>), <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb170-5"><a href="#cb170-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(rfor_debit, <span class="at">series =</span> <span class="st">"rforecast"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb170-6"><a href="#cb170-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(vfor_debit, <span class="at">series =</span> <span class="st">"vforecast"</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">lty =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-127-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-127-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
+</div>
+</div>
+<p>Корень из среднеквадратичной оценки предсказания:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb171"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="cf">function</span>(true, pred) <span class="fu">sqrt</span>(<span class="fu">mean</span>((true <span class="sc">-</span> pred)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb171-2"><a href="#cb171-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb171-3"><a href="#cb171-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb171-4"><a href="#cb171-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE =</span> <span class="fu">c</span>(<span class="fu">rmse</span>(debitcards, rfor_debit), <span class="fu">rmse</span>(debitcards, vfor_debit)),</span>
+<span id="cb171-5"><a href="#cb171-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">c</span>(<span class="st">"rforecast"</span>, <span class="st">"vforecast"</span>)</span>
+<span id="cb171-6"><a href="#cb171-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>##               RMSE
+## rforecast 1436.799
+## vforecast 2363.807</code></pre>
 </div>
 </div>
 <p>Теперь предскажем отдельно тренд:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb173"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb173-1"><a href="#cb173-1" aria-hidden="true" tabindex="-1"></a>rfor_debit_trend <span class="ot">&lt;-</span> <span class="fu">rforecast</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), <span class="at">len =</span> <span class="dv">24</span>)</span>
 <span id="cb173-2"><a href="#cb173-2" aria-hidden="true" tabindex="-1"></a>vfor_debit_trend <span class="ot">&lt;-</span> <span class="fu">vforecast</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), <span class="at">len =</span> <span class="dv">24</span>)</span>
-<span id="cb173-3"><a href="#cb173-3" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb173-4"><a href="#cb173-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(debitcards, rfor_debit_trend, vfor_debit_trend),</span>
-<span id="cb173-5"><a href="#cb173-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb173-6"><a href="#cb173-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="cb173-7"><a href="#cb173-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb173-8"><a href="#cb173-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>),</span>
-<span id="cb173-9"><a href="#cb173-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"rforecast"</span>, <span class="st">"vforecast"</span>), <span class="at">space =</span> <span class="st">"top"</span>)</span>
-<span id="cb173-10"><a href="#cb173-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb173-3"><a href="#cb173-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb173-4"><a href="#cb173-4" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(debitcards, <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb173-5"><a href="#cb173-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(rfor_debit_trend, <span class="at">series =</span> <span class="st">"rforecast"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb173-6"><a href="#cb173-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(vfor_debit_trend, <span class="at">series =</span> <span class="st">"vforecast"</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">lty =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-128-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-129-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2571,18 +2552,14 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell">
 <div class="sourceCode cell-code" id="cb174"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a>rfor_debit_season <span class="ot">&lt;-</span> <span class="fu">rforecast</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">14</span>),  <span class="dv">24</span>)</span>
 <span id="cb174-2"><a href="#cb174-2" aria-hidden="true" tabindex="-1"></a>vfor_debit_season <span class="ot">&lt;-</span> <span class="fu">vforecast</span>(eos_debit1, <span class="fu">list</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">14</span>), <span class="dv">24</span>)</span>
-<span id="cb174-3"><a href="#cb174-3" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb174-4"><a href="#cb174-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(reos_debit1<span class="sc">$</span>Seasonality, rfor_debit_season, vfor_debit_season),</span>
-<span id="cb174-5"><a href="#cb174-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb174-6"><a href="#cb174-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="cb174-7"><a href="#cb174-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb174-8"><a href="#cb174-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>),</span>
-<span id="cb174-9"><a href="#cb174-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"rforecast"</span>, <span class="st">"vforecast"</span>), <span class="at">space =</span> <span class="st">"top"</span>)</span>
-<span id="cb174-10"><a href="#cb174-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb174-3"><a href="#cb174-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb174-4"><a href="#cb174-4" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(reos_debit1<span class="sc">$</span>Seasonality, <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb174-5"><a href="#cb174-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(rfor_debit_season, <span class="at">series =</span> <span class="st">"rforecast"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb174-6"><a href="#cb174-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(vfor_debit_season, <span class="at">series =</span> <span class="st">"vforecast"</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">lty =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-129-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-130-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2592,12 +2569,11 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <p>Поскольку рекурентный прогноз оказался точнее, будем использовать именно его. Доверительные интервалы:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb175"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb175-1"><a href="#cb175-1" aria-hidden="true" tabindex="-1"></a>for_conf <span class="ot">&lt;-</span> <span class="fu">forecast</span>(s_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="dv">24</span>, <span class="at">interval =</span> <span class="st">"conf"</span>)</span>
-<span id="cb175-2"><a href="#cb175-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(for_conf, <span class="dv">50</span>, <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb175-3"><a href="#cb175-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(<span class="fu">tail</span>(debitcards, <span class="dv">50</span>), <span class="at">color =</span> <span class="st">"black"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb175-2"><a href="#cb175-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(for_conf, <span class="at">flwd =</span> <span class="dv">1</span>, <span class="at">ylab =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-130-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-131-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2605,25 +2581,24 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <p>Предсказательные интервалы:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb176"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb176-1"><a href="#cb176-1" aria-hidden="true" tabindex="-1"></a>for_pred <span class="ot">&lt;-</span> <span class="fu">forecast</span>(s_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="dv">24</span>, <span class="at">interval =</span> <span class="st">"pred"</span>)</span>
-<span id="cb176-2"><a href="#cb176-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(for_pred, <span class="dv">50</span>, <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb176-3"><a href="#cb176-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(<span class="fu">tail</span>(debitcards, <span class="dv">50</span>), <span class="at">color =</span> <span class="st">"black"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb176-2"><a href="#cb176-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(for_pred, <span class="at">flwd =</span> <span class="dv">1</span>, <span class="at">ylab =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-131-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-132-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Предсказательные интервалы, как и ожидалось, шире, чем доверительные. Заметим, что для доберительных интервалов некоторые предсказанные значения лежат ниже нижней границы. Можно делать прогноз тоже бутстрепом:</p>
+<p>Предсказательные интервалы, как и ожидалось, шире, чем доверительные. Заметим, что предсказанные значения лежат ближе к нижней границе интервалов, а для доверительных интервалов некоторые значения лежат даже ниже ее. Можно делать прогноз тоже бутстрепом:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb177"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a>for_bootstrap <span class="ot">&lt;-</span> <span class="fu">forecast</span>(s_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="dv">24</span>, <span class="at">interval =</span> <span class="st">"conf"</span>, <span class="at">only.intervals =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb177-2"><a href="#cb177-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(for_bootstrap, <span class="dv">50</span>, <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb177-3"><a href="#cb177-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(<span class="fu">tail</span>(debitcards, <span class="dv">50</span>), <span class="at">color =</span> <span class="st">"black"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb177"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a>for_bootstrap <span class="ot">&lt;-</span></span>
+<span id="cb177-2"><a href="#cb177-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(s_debit1, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="dv">24</span>, <span class="at">interval =</span> <span class="st">"pred"</span>, <span class="at">only.intervals =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb177-3"><a href="#cb177-3" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(for_bootstrap, <span class="at">flwd =</span> <span class="dv">1</span>, <span class="at">ylab =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-132-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-133-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2636,11 +2611,11 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="sourceCode cell-code" id="cb178"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb178-1"><a href="#cb178-1" aria-hidden="true" tabindex="-1"></a>debit_gapped <span class="ot">&lt;-</span> debitcards</span>
 <span id="cb178-2"><a href="#cb178-2" aria-hidden="true" tabindex="-1"></a><span class="fu">window</span>(debit_gapped, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2004</span>, <span class="dv">1</span>), <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2005</span>, <span class="dv">12</span>)) <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
 <span id="cb178-3"><a href="#cb178-3" aria-hidden="true" tabindex="-1"></a>debit_gap <span class="ot">&lt;-</span> <span class="fu">window</span>(debitcards, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2004</span>, <span class="dv">1</span>), <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2005</span>, <span class="dv">12</span>))</span>
-<span id="cb178-4"><a href="#cb178-4" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(debit_gapped)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb178-4"><a href="#cb178-4" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(debit_gapped, <span class="at">ylab =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-133-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-134-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2651,27 +2626,16 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="sourceCode cell-code" id="cb179"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(debit_gapped, <span class="dv">48</span>, <span class="at">svd.method =</span> <span class="st">"svd"</span>)</span>
 <span id="cb179-2"><a href="#cb179-2" aria-hidden="true" tabindex="-1"></a>eos <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>), <span class="st">"distance"</span>, <span class="at">delta =</span> <span class="fl">1e-5</span>)</span>
 <span id="cb179-3"><a href="#cb179-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-4"><a href="#cb179-4" aria-hidden="true" tabindex="-1"></a>g_original <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="st">"original"</span>, <span class="st">"sequential"</span>)</span>
-<span id="cb179-5"><a href="#cb179-5" aria-hidden="true" tabindex="-1"></a>g_reconstructed <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="st">"reconstructed"</span>, <span class="st">"sequential"</span>)</span>
+<span id="cb179-4"><a href="#cb179-4" aria-hidden="true" tabindex="-1"></a>go <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="st">"original"</span>, <span class="st">"sequential"</span>)</span>
+<span id="cb179-5"><a href="#cb179-5" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="st">"reconstructed"</span>, <span class="st">"sequential"</span>)</span>
 <span id="cb179-6"><a href="#cb179-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-7"><a href="#cb179-7" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb179-8"><a href="#cb179-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(debit_gap, g_original, g_reconstructed),</span>
-<span id="cb179-9"><a href="#cb179-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb179-10"><a href="#cb179-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"grey"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>),</span>
-<span id="cb179-11"><a href="#cb179-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb179-12"><a href="#cb179-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(</span>
-<span id="cb179-13"><a href="#cb179-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">c</span>(</span>
-<span id="cb179-14"><a href="#cb179-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Gap"</span>,</span>
-<span id="cb179-15"><a href="#cb179-15" aria-hidden="true" tabindex="-1"></a>      <span class="st">"gapfill(base = </span><span class="sc">\"</span><span class="st">original</span><span class="sc">\"</span><span class="st">)"</span>,</span>
-<span id="cb179-16"><a href="#cb179-16" aria-hidden="true" tabindex="-1"></a>      <span class="st">"gapfill(base = </span><span class="sc">\"</span><span class="st">reconstructed</span><span class="sc">\"</span><span class="st">)"</span></span>
-<span id="cb179-17"><a href="#cb179-17" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb179-18"><a href="#cb179-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">space =</span> <span class="st">"top"</span></span>
-<span id="cb179-19"><a href="#cb179-19" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb179-20"><a href="#cb179-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb179-7"><a href="#cb179-7" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(debitcards, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">color =</span> <span class="st">"grey"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb179-8"><a href="#cb179-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(go, <span class="at">series =</span> <span class="st">"original"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb179-9"><a href="#cb179-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(g, <span class="at">series =</span> <span class="st">"reconstructed"</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-134-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-135-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2680,28 +2644,17 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <section id="simultaneous" class="level2" data-number="18.2">
 <h2 data-number="18.2" class="anchored" data-anchor-id="simultaneous"><span class="header-section-number">18.2</span> Simultaneous</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb180"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb180-1"><a href="#cb180-1" aria-hidden="true" tabindex="-1"></a>g_original <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="st">"original"</span>, <span class="st">"simultaneous"</span>)</span>
-<span id="cb180-2"><a href="#cb180-2" aria-hidden="true" tabindex="-1"></a>g_reconstructed <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="st">"reconstructed"</span>, <span class="st">"simultaneous"</span>)</span>
+<div class="sourceCode cell-code" id="cb180"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb180-1"><a href="#cb180-1" aria-hidden="true" tabindex="-1"></a>go <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="st">"original"</span>, <span class="st">"simultaneous"</span>)</span>
+<span id="cb180-2"><a href="#cb180-2" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="st">"reconstructed"</span>, <span class="st">"simultaneous"</span>)</span>
 <span id="cb180-3"><a href="#cb180-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb180-4"><a href="#cb180-4" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb180-5"><a href="#cb180-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(debitcards, debit_gap, g_original, g_reconstructed),</span>
-<span id="cb180-6"><a href="#cb180-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb180-7"><a href="#cb180-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"grey"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>),</span>
-<span id="cb180-8"><a href="#cb180-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb180-9"><a href="#cb180-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(</span>
-<span id="cb180-10"><a href="#cb180-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">c</span>(</span>
-<span id="cb180-11"><a href="#cb180-11" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Original"</span>,</span>
-<span id="cb180-12"><a href="#cb180-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Gap"</span>,</span>
-<span id="cb180-13"><a href="#cb180-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"gapfill(base = </span><span class="sc">\"</span><span class="st">original</span><span class="sc">\"</span><span class="st">)"</span>,</span>
-<span id="cb180-14"><a href="#cb180-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"gapfill(base = </span><span class="sc">\"</span><span class="st">reconstructed</span><span class="sc">\"</span><span class="st">)"</span></span>
-<span id="cb180-15"><a href="#cb180-15" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb180-16"><a href="#cb180-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">space =</span> <span class="st">"top"</span></span>
-<span id="cb180-17"><a href="#cb180-17" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb180-18"><a href="#cb180-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb180-4"><a href="#cb180-4" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(debitcards, <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb180-5"><a href="#cb180-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(debit_gap, <span class="at">color =</span> <span class="st">"grey"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb180-6"><a href="#cb180-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(go, <span class="at">series =</span> <span class="st">"original"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb180-7"><a href="#cb180-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(g, <span class="at">series =</span> <span class="st">"reconstructed"</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-135-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-136-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2710,22 +2663,16 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <section id="iterative" class="level2" data-number="18.3">
 <h2 data-number="18.3" class="anchored" data-anchor-id="iterative"><span class="header-section-number">18.3</span> Iterative</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb181"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a>ig0 <span class="ot">&lt;-</span> <span class="fu">igapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="at">base =</span> <span class="st">"original"</span>)</span>
+<div class="sourceCode cell-code" id="cb181"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a>igo <span class="ot">&lt;-</span> <span class="fu">igapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="at">base =</span> <span class="st">"original"</span>)</span>
 <span id="cb181-2"><a href="#cb181-2" aria-hidden="true" tabindex="-1"></a>ig <span class="ot">&lt;-</span> <span class="fu">igapfill</span>(eos, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>), <span class="at">base =</span> <span class="st">"reconstructed"</span>)</span>
-<span id="cb181-3"><a href="#cb181-3" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb181-4"><a href="#cb181-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(debitcards, ig0, ig),</span>
-<span id="cb181-5"><a href="#cb181-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb181-6"><a href="#cb181-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"grey"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>),</span>
-<span id="cb181-7"><a href="#cb181-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb181-8"><a href="#cb181-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(</span>
-<span id="cb181-9"><a href="#cb181-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">c</span>(<span class="st">"Gap"</span>, <span class="st">"igapfill(base = </span><span class="sc">\"</span><span class="st">original</span><span class="sc">\"</span><span class="st">)"</span>, <span class="st">"igapfill(base = </span><span class="sc">\"</span><span class="st">reconstructed</span><span class="sc">\"</span><span class="st">)"</span>),</span>
-<span id="cb181-10"><a href="#cb181-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">space =</span> <span class="st">"top"</span></span>
-<span id="cb181-11"><a href="#cb181-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb181-12"><a href="#cb181-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb181-3"><a href="#cb181-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb181-4"><a href="#cb181-4" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(debit_gap, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">color =</span> <span class="st">"grey"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb181-5"><a href="#cb181-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(igo, <span class="at">series =</span> <span class="st">"original"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb181-6"><a href="#cb181-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(ig, <span class="at">series =</span> <span class="st">"reconstructed"</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-136-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-137-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2737,11 +2684,11 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <h3 data-number="18.4.1" class="anchored" data-anchor-id="ряд-без-тренда"><span class="header-section-number">18.4.1</span> Ряд без тренда</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb182"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb182-1"><a href="#cb182-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">length</span>(signal2)</span>
-<span id="cb182-2"><a href="#cb182-2" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(signal2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb182-2"><a href="#cb182-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(signal2, <span class="at">ylab =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-137-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-138-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2781,7 +2728,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-140-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-141-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2794,7 +2741,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-141-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-142-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2803,11 +2750,11 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <section id="ряд-c-трендом" class="level3" data-number="18.4.2">
 <h3 data-number="18.4.2" class="anchored" data-anchor-id="ряд-c-трендом"><span class="header-section-number">18.4.2</span> Ряд c трендом</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb187"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb187-1"><a href="#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(signal7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb187"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb187-1"><a href="#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(signal7, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-142-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-143-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2820,7 +2767,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-143-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-144-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2833,7 +2780,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-144-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-145-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2848,26 +2795,24 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-145-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-146-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb191"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb191-1"><a href="#cb191-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(s, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>), <span class="at">method =</span> <span class="st">"simultaneous"</span>)</span>
-<span id="cb191-2"><a href="#cb191-2" aria-hidden="true" tabindex="-1"></a>ig <span class="ot">&lt;-</span> <span class="fu">igapfill</span>(s, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>), <span class="at">maxiter =</span> <span class="dv">50</span>)</span>
-<span id="cb191-3"><a href="#cb191-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb191-4"><a href="#cb191-4" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(</span>
-<span id="cb191-5"><a href="#cb191-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(x2, g, ig),</span>
-<span id="cb191-6"><a href="#cb191-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">superpose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb191-7"><a href="#cb191-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb191-8"><a href="#cb191-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"grey"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>),</span>
-<span id="cb191-9"><a href="#cb191-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">auto.key =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="fu">c</span>(<span class="st">"Original"</span>, <span class="st">"gapfill"</span>, <span class="st">"igapfill"</span>), <span class="at">space =</span> <span class="st">"top"</span>)</span>
-<span id="cb191-10"><a href="#cb191-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb191"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb191-1"><a href="#cb191-1" aria-hidden="true" tabindex="-1"></a>g_seq <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(s, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>), <span class="at">method =</span> <span class="st">"sequential"</span>)</span>
+<span id="cb191-2"><a href="#cb191-2" aria-hidden="true" tabindex="-1"></a>g_simult <span class="ot">&lt;-</span> <span class="fu">gapfill</span>(s, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>), <span class="at">method =</span> <span class="st">"simultaneous"</span>)</span>
+<span id="cb191-3"><a href="#cb191-3" aria-hidden="true" tabindex="-1"></a>ig <span class="ot">&lt;-</span> <span class="fu">igapfill</span>(s, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>), <span class="at">maxiter =</span> <span class="dv">50</span>)</span>
+<span id="cb191-4"><a href="#cb191-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb191-5"><a href="#cb191-5" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(x2, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb191-6"><a href="#cb191-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(g_seq, <span class="at">series =</span> <span class="st">"sequential"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb191-7"><a href="#cb191-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(g_simult, <span class="at">series =</span> <span class="st">"simultaneous"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb191-8"><a href="#cb191-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(ig, <span class="at">series =</span> <span class="st">"iterative"</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-146-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-147-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2886,7 +2831,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-147-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-148-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2930,7 +2875,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-150-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-151-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2954,7 +2899,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-151-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-152-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3024,7 +2969,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-153-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-154-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3047,7 +2992,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-155-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-156-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3071,7 +3016,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-156-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-157-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3091,7 +3036,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-157-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-158-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3102,7 +3047,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-158-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-159-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3126,7 +3071,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-159-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-160-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3204,7 +3149,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-160-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-161-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3218,32 +3163,21 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 ## Model df: 4.   Total lags used: 10</code></pre>
 </div>
 </div>
-<p>По IC модель ARIMA(2, 0, 0) заметно хуже ARIMA(3, 0, 1). Предскажем несколько точек:</p>
+<p>По IC модель ARIMA(2, 0, 0) заметно хуже ARIMA(3, 0, 1). На самом деле, истинная модель ARIMA(1, 0, 1), которая по IC близка к ARIMA(2, 0, 0).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb226"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb226-1"><a href="#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(<span class="fu">forecast</span>(auto_fit), <span class="at">include =</span> <span class="dv">200</span>, <span class="at">ylab =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb226"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb226-1"><a href="#cb226-1" aria-hidden="true" tabindex="-1"></a>ts5 <span class="ot">&lt;-</span> <span class="fu">as.ts</span>(<span class="fu">read.csv</span>(<span class="st">"./data/ts5.txt"</span>, <span class="at">sep=</span><span class="st">""</span>))</span>
+<span id="cb226-2"><a href="#cb226-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtsdisplay</span>(ts5, <span class="at">plot.type =</span> <span class="st">"partial"</span>, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-161-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>На самом деле, истинная модель ARIMA(1, 0, 1), которая по IC близка к ARIMA(2, 0, 0).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb227"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb227-1"><a href="#cb227-1" aria-hidden="true" tabindex="-1"></a>ts5 <span class="ot">&lt;-</span> <span class="fu">as.ts</span>(<span class="fu">read.csv</span>(<span class="st">"./data/ts5.txt"</span>, <span class="at">sep=</span><span class="st">""</span>))</span>
-<span id="cb227-2"><a href="#cb227-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtsdisplay</span>(ts5, <span class="at">plot.type =</span> <span class="st">"partial"</span>, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-162-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-162-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Похоже на модель ARIMA(3, 0, 2).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb228"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb228-1"><a href="#cb228-1" aria-hidden="true" tabindex="-1"></a>(fit <span class="ot">&lt;-</span> <span class="fu">Arima</span>(ts5, <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">2</span>), <span class="at">include.mean =</span> <span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb227"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb227-1"><a href="#cb227-1" aria-hidden="true" tabindex="-1"></a>(fit <span class="ot">&lt;-</span> <span class="fu">Arima</span>(ts5, <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">2</span>), <span class="at">include.mean =</span> <span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## Series: ts5 
 ## ARIMA(3,0,2) with zero mean 
@@ -3256,11 +3190,11 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 ## sigma^2 = 0.3963:  log likelihood = -1909.77
 ## AIC=3831.54   AICc=3831.58   BIC=3865.14</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb230"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb230-1"><a href="#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(fit, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb229"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb229-1"><a href="#cb229-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(fit, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-163-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-163-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3275,14 +3209,14 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb232"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb232-1"><a href="#cb232-1" aria-hidden="true" tabindex="-1"></a>auto_fit <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(</span>
-<span id="cb232-2"><a href="#cb232-2" aria-hidden="true" tabindex="-1"></a>  ts5,</span>
-<span id="cb232-3"><a href="#cb232-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">max.p =</span> <span class="dv">3</span>, <span class="at">max.q =</span> <span class="dv">2</span>,</span>
-<span id="cb232-4"><a href="#cb232-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">stationary =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb232-5"><a href="#cb232-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stepwise =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb232-6"><a href="#cb232-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">trace =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb232-7"><a href="#cb232-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">approximation =</span> <span class="cn">FALSE</span></span>
-<span id="cb232-8"><a href="#cb232-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb231"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb231-1"><a href="#cb231-1" aria-hidden="true" tabindex="-1"></a>auto_fit <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(</span>
+<span id="cb231-2"><a href="#cb231-2" aria-hidden="true" tabindex="-1"></a>  ts5,</span>
+<span id="cb231-3"><a href="#cb231-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">max.p =</span> <span class="dv">3</span>, <span class="at">max.q =</span> <span class="dv">2</span>,</span>
+<span id="cb231-4"><a href="#cb231-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">stationary =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb231-5"><a href="#cb231-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stepwise =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb231-6"><a href="#cb231-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">trace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb231-7"><a href="#cb231-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">approximation =</span> <span class="cn">FALSE</span></span>
+<span id="cb231-8"><a href="#cb231-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## 
 ##  ARIMA(0,0,0) with zero mean     : 4020.233
@@ -3314,7 +3248,7 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 ## 
 ##  Best model: ARIMA(3,0,0) with zero mean</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb234"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb234-1"><a href="#cb234-1" aria-hidden="true" tabindex="-1"></a>auto_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb233"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb233-1"><a href="#cb233-1" aria-hidden="true" tabindex="-1"></a>auto_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## Series: ts5 
 ## ARIMA(3,0,0) with zero mean 
@@ -3327,11 +3261,11 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 ## sigma^2 = 0.3961:  log likelihood = -1910.39
 ## AIC=3828.78   AICc=3828.8   BIC=3851.18</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb236"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb236-1"><a href="#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(auto_fit, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb235"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb235-1"><a href="#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(auto_fit, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-164-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-164-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3346,43 +3280,33 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 </div>
 </div>
 <p>Наилучшей моделью оказалась ARIMA(3, 0, 0), которая и является истинной.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb238"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb238-1"><a href="#cb238-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(<span class="fu">forecast</span>(auto_fit), <span class="at">include =</span> <span class="dv">200</span>, <span class="at">ylab =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-165-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
 <section id="реальные-данные-5" class="level2" data-number="19.2">
 <h2 data-number="19.2" class="anchored" data-anchor-id="реальные-данные-5"><span class="header-section-number">19.2</span> Реальные данные</h2>
+<p>Автоматически подберем модель ARIMA для остатков после выделения тренда и сезонности с помощью SSA.</p>
 <section id="уровень-воды-реки-нил-2" class="level3" data-number="19.2.1">
 <h3 data-number="19.2.1" class="anchored" data-anchor-id="уровень-воды-реки-нил-2"><span class="header-section-number">19.2.1</span> Уровень воды реки Нил</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb239"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb239-1"><a href="#cb239-1" aria-hidden="true" tabindex="-1"></a>rNile <span class="ot">&lt;-</span> <span class="fu">resid</span>(r_NileMin)</span>
-<span id="cb239-2"><a href="#cb239-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtsdisplay</span>(rNile, <span class="at">plot.type =</span> <span class="st">"partial"</span>, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb237"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb237-1"><a href="#cb237-1" aria-hidden="true" tabindex="-1"></a>rNile <span class="ot">&lt;-</span> <span class="fu">resid</span>(r_NileMin)</span>
+<span id="cb237-2"><a href="#cb237-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtsdisplay</span>(rNile, <span class="at">plot.type =</span> <span class="st">"partial"</span>, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-166-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-165-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Автоматически подберем модель:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb240"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb240-1"><a href="#cb240-1" aria-hidden="true" tabindex="-1"></a>rNile_train <span class="ot">&lt;-</span> <span class="fu">head</span>(rNile, <span class="sc">-</span><span class="dv">10</span>)</span>
-<span id="cb240-2"><a href="#cb240-2" aria-hidden="true" tabindex="-1"></a>rNile_test <span class="ot">&lt;-</span> <span class="fu">tail</span>(rNile, <span class="dv">10</span>)</span>
-<span id="cb240-3"><a href="#cb240-3" aria-hidden="true" tabindex="-1"></a>model_Nile <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(</span>
-<span id="cb240-4"><a href="#cb240-4" aria-hidden="true" tabindex="-1"></a>  rNile_train,</span>
-<span id="cb240-5"><a href="#cb240-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stationary =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb240-6"><a href="#cb240-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">stepwise =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb240-7"><a href="#cb240-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">approximation =</span> <span class="cn">FALSE</span></span>
-<span id="cb240-8"><a href="#cb240-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb240-9"><a href="#cb240-9" aria-hidden="true" tabindex="-1"></a>model_Nile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb238"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb238-1"><a href="#cb238-1" aria-hidden="true" tabindex="-1"></a>rNile_train <span class="ot">&lt;-</span> <span class="fu">head</span>(rNile, <span class="sc">-</span><span class="dv">10</span>)</span>
+<span id="cb238-2"><a href="#cb238-2" aria-hidden="true" tabindex="-1"></a>rNile_test <span class="ot">&lt;-</span> <span class="fu">tail</span>(rNile, <span class="dv">10</span>)</span>
+<span id="cb238-3"><a href="#cb238-3" aria-hidden="true" tabindex="-1"></a>arima_Nile <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(</span>
+<span id="cb238-4"><a href="#cb238-4" aria-hidden="true" tabindex="-1"></a>  rNile_train,</span>
+<span id="cb238-5"><a href="#cb238-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stationary =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb238-6"><a href="#cb238-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">stepwise =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb238-7"><a href="#cb238-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">approximation =</span> <span class="cn">FALSE</span></span>
+<span id="cb238-8"><a href="#cb238-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb238-9"><a href="#cb238-9" aria-hidden="true" tabindex="-1"></a>arima_Nile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## Series: rNile_train 
 ## ARIMA(1,0,2) with zero mean 
@@ -3395,11 +3319,11 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 ## sigma^2 = 4682:  log likelihood = -3684.56
 ## AIC=7377.11   AICc=7377.17   BIC=7395.04</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb242"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb242-1"><a href="#cb242-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(model_Nile, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb240"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb240-1"><a href="#cb240-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(arima_Nile, <span class="at">plot.type =</span> <span class="st">"hist"</span>, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-167-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-166-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3413,14 +3337,14 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 ## Model df: 3.   Total lags used: 10</code></pre>
 </div>
 </div>
-<p>Нет основания отвергать гипотезу о белом шуме, поэтому сделаем прогноз:</p>
+<p>Нет основания отвергать гипотезу о белом шуме, поэтому сделаем прогноз. Поскольку остатки не похожи на нормальное распределение, предсказательные интервалы будем вычислять с помощью бутстрепа:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb244"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb244-1"><a href="#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(<span class="fu">forecast</span>(model_Nile), <span class="at">include =</span> <span class="dv">200</span>, <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb244-2"><a href="#cb244-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(rNile_test, <span class="at">colour =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb242"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb242-1"><a href="#cb242-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(<span class="fu">forecast</span>(arima_Nile, <span class="at">bootstrap =</span> <span class="cn">TRUE</span>), <span class="at">include =</span> <span class="dv">200</span>, <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb242-2"><a href="#cb242-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(rNile_test, <span class="at">colour =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-168-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-167-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3429,25 +3353,25 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <section id="дебетовые-карты-4" class="level3" data-number="19.2.2">
 <h3 data-number="19.2.2" class="anchored" data-anchor-id="дебетовые-карты-4"><span class="header-section-number">19.2.2</span> Дебетовые карты</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb245"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb245-1"><a href="#cb245-1" aria-hidden="true" tabindex="-1"></a>rdebit <span class="ot">&lt;-</span> <span class="fu">resid</span>(reos_debit)</span>
-<span id="cb245-2"><a href="#cb245-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtsdisplay</span>(rdebit, <span class="at">plot.type =</span> <span class="st">"partial"</span>, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb243"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb243-1"><a href="#cb243-1" aria-hidden="true" tabindex="-1"></a>rdebit <span class="ot">&lt;-</span> <span class="fu">resid</span>(reos_debit)</span>
+<span id="cb243-2"><a href="#cb243-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtsdisplay</span>(rdebit, <span class="at">plot.type =</span> <span class="st">"partial"</span>, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-169-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-168-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb246"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb246-1"><a href="#cb246-1" aria-hidden="true" tabindex="-1"></a>model_debit <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(</span>
-<span id="cb246-2"><a href="#cb246-2" aria-hidden="true" tabindex="-1"></a>  rdebit,</span>
-<span id="cb246-3"><a href="#cb246-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">stationary =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb246-4"><a href="#cb246-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seasonal =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb246-5"><a href="#cb246-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stepwise =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb246-6"><a href="#cb246-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">approximation =</span> <span class="cn">FALSE</span></span>
-<span id="cb246-7"><a href="#cb246-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb246-8"><a href="#cb246-8" aria-hidden="true" tabindex="-1"></a>model_debit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb244"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb244-1"><a href="#cb244-1" aria-hidden="true" tabindex="-1"></a>arima_debit <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(</span>
+<span id="cb244-2"><a href="#cb244-2" aria-hidden="true" tabindex="-1"></a>  rdebit,</span>
+<span id="cb244-3"><a href="#cb244-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">stationary =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb244-4"><a href="#cb244-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seasonal =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb244-5"><a href="#cb244-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stepwise =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb244-6"><a href="#cb244-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">approximation =</span> <span class="cn">FALSE</span></span>
+<span id="cb244-7"><a href="#cb244-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb244-8"><a href="#cb244-8" aria-hidden="true" tabindex="-1"></a>arima_debit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## Series: rdebit 
 ## ARIMA(0,0,3) with zero mean 
@@ -3460,11 +3384,11 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 ## sigma^2 = 0.001207:  log likelihood = 304.11
 ## AIC=-600.23   AICc=-599.96   BIC=-588.03</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb248"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb248-1"><a href="#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(model_debit, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb246"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb246-1"><a href="#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(arima_debit, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="main_files/figure-html/unnamed-chunk-170-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="main_files/figure-html/unnamed-chunk-169-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -3479,10 +3403,92 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 </div>
 </div>
 <p>Нулевая гипотеза о белом шуме отверглась, видимо, в ряде осталась часть сезонности. Предсказывать неверную модель смысла нет.</p>
-
-
 </section>
 </section>
+</section>
+<section id="seasonal-arima" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> Seasonal ARIMA</h1>
+<p>Подберем сезонную модель ARIMA для данных <code>debitcards</code> без двух периодов:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb248"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb248-1"><a href="#cb248-1" aria-hidden="true" tabindex="-1"></a>sarima_debit <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(</span>
+<span id="cb248-2"><a href="#cb248-2" aria-hidden="true" tabindex="-1"></a>  debit_trunc,</span>
+<span id="cb248-3"><a href="#cb248-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">stepwise =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb248-4"><a href="#cb248-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lambda =</span> <span class="st">"auto"</span></span>
+<span id="cb248-5"><a href="#cb248-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb248-6"><a href="#cb248-6" aria-hidden="true" tabindex="-1"></a>sarima_debit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>## Series: debit_trunc 
+## ARIMA(2,1,0)(0,1,1)[12] 
+## Box Cox transformation: lambda= 0.2915094 
+## 
+## Coefficients:
+##           ar1      ar2     sma1
+##       -0.7410  -0.4557  -0.7704
+## s.e.   0.0825   0.0835   0.1116
+## 
+## sigma^2 = 0.676:  log likelihood = -149.77
+## AIC=307.55   AICc=307.9   BIC=318.66</code></pre>
+</div>
+</div>
+<p>Проверим остатки:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb250"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb250-1"><a href="#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(sarima_debit, <span class="at">plot.type =</span> <span class="st">"hist"</span>, <span class="at">lag.max =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-171-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(2,1,0)(0,1,1)[12]
+## Q* = 26.381, df = 21, p-value = 0.1923
+## 
+## Model df: 3.   Total lags used: 24</code></pre>
+</div>
+</div>
+<p>Теперь гипотеза не отвергается, но остатки не распределены нормально. Посмотрим на прогноз с бутстреп-интервалами:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb252"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb252-1"><a href="#cb252-1" aria-hidden="true" tabindex="-1"></a>for_sarima <span class="ot">&lt;-</span> <span class="fu">forecast</span>(sarima_debit, <span class="dv">24</span>, <span class="at">bootstrap =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb252-2"><a href="#cb252-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(for_sarima, <span class="at">flwd =</span> <span class="dv">1</span>, <span class="at">ylab =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-172-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Сравним его с истинными значениями и с SSA прогнозом:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb253"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb253-1"><a href="#cb253-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(<span class="fu">tail</span>(debitcards, <span class="dv">36</span>), <span class="at">ylab =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb253-2"><a href="#cb253-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(for_sarima<span class="sc">$</span>mean, <span class="at">series =</span> <span class="st">"SARIMA"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb253-3"><a href="#cb253-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(rfor_debit, <span class="at">series =</span> <span class="st">"SSA"</span>, <span class="at">lwd =</span> <span class="dv">1</span>, <span class="at">lty =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-173-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ошибки предсказаний:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb254"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb254-1"><a href="#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb254-2"><a href="#cb254-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE =</span> <span class="fu">c</span>(<span class="fu">rmse</span>(debitcards, rfor_debit), <span class="fu">rmse</span>(debitcards, for_sarima<span class="sc">$</span>mean)),</span>
+<span id="cb254-3"><a href="#cb254-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">c</span>(<span class="st">"SSA"</span>, <span class="st">"SARIMA"</span>)</span>
+<span id="cb254-4"><a href="#cb254-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>##             RMSE
+## SSA    1436.7990
+## SARIMA  779.4278</code></pre>
+</div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->

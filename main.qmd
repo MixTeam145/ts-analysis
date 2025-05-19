@@ -5,6 +5,7 @@ title: "Статистический анализ временных рядов"
 Подключаем необходимые библиотеки:
 ```{r}
 #| message: false
+#| cache: false
 
 library(ggpubr)
 library(lattice)
@@ -22,6 +23,7 @@ source("./R/eossa_new.R")
 
 ```{r}
 #| include: false
+#| cache: false
 
 ggtsdisplay <- function(x,
                         plot.type = c("spectrum", "partial", "histogram", "scatter"),
@@ -225,6 +227,16 @@ checkresiduals <- function(object, lag, test, plot = TRUE, ...) {
     return(invisible(LBtest))
   }
 }
+
+theme_set(
+  theme_bw() +
+  theme(
+    legend.key.width = unit(18, "mm"),
+    legend.text = element_text(size = 12),
+    legend.title = element_blank(),
+    legend.position = "bottom"
+  ) 
+)
 ```
 
 # Периодограмма и автокорреляционная функция
@@ -249,8 +261,6 @@ ggperiodogram <- function(x, points = FALSE) {
     p <- p + geom_point(na.rm = TRUE) 
   p
 }
-
-theme_set(theme_bw())
 ```
 
 ```{r}
@@ -1497,7 +1507,6 @@ plot(s, "vectors")
 ```{r}
 ios <- iossa(s, list(1:2, 3:4, 5:6))
 plot(ios, "vectors")
-owcor(ios)
 ```
 
 ```{r}
@@ -1605,7 +1614,7 @@ checkresiduals(reos_debit1)
 
 ```{r}
 decompose_debit <- decompose(debit_trunc, type = "multiplicative")
-plot(decompose_debit)
+autoplot(decompose_debit)
 ```
 
 ```{r}
@@ -1614,7 +1623,7 @@ checkresiduals(decompose_debit$random)
 
 ```{r}
 stl_debit <- stl(debit_trunc, s.window = 7, s.degree = 1, t.degree = 1, l.degree = 1)
-plot(stl_debit)
+autoplot(stl_debit)
 ```
 
 ```{r}
@@ -1623,16 +1632,12 @@ checkresiduals(stl_debit$time.series[, 3])
 
 Гипотеза об белом шуме остатков отверглась для всех трех методов. Это говорит нам, что либо в ряде еще что-то осталось, либо остатки не описываются моделью белого шума. Сравним выделенные тренды:
 ```{r}
-xyplot(
-  cbind(debit_trunc, reos_debit1$Trend, decompose_debit$trend, stl_debit$time.series[, 2]),
-  superpose = TRUE,
-  col = c("grey", "red", "blue", "orange"),
-  lwd = 2,
-  auto.key = list(
-    text = c("Original", "EOSSA", "Classical Seasonal Decomposition", "STL"),
-    space = "top"
-  )
-)
+#| warning: false
+
+autoplot(debitcards, ylab = "") +
+  autolayer(reos_debit1$Trend, series = "EOSSA", lwd = 1) +
+  autolayer(decompose_debit$trend, series = "decompose", lwd = 1) +
+  autolayer(stl_debit$time.series[, 2], series = "STL", lwd = 1)
 ```
 
 
@@ -1645,51 +1650,39 @@ xyplot(
 ```{r}
 rfor_debit <- rforecast(eos_debit1, list(1:14), len = 24)
 vfor_debit <- vforecast(eos_debit1, list(1:14), len = 24)
-rmse_rfor <- sqrt(mean((debitcards - rfor_debit)^2))
-rmse_vfor <-  sqrt(mean((debitcards - vfor_debit)^2))
-xyplot(
-  cbind(tail(debitcards, 36), rfor_debit, vfor_debit),
-  superpose = TRUE,
-  lwd = c(1, 2, 2),
-  lty = c(1, 1, 2),
-  col = c("black", "red", "blue"),
-  auto.key = list(
-    text = c(
-      "Original",
-      sprintf("rforecast (RMSE: %.2f)", rmse_rfor),
-      sprintf("vforecast (RMSE: %.2f)", rmse_vfor)
-    ),
-    space = "top"
-  )
-)
+
+autoplot(tail(debitcards, 36), ylab = "") +
+  autolayer(rfor_debit, series = "rforecast", lwd = 1) +
+  autolayer(vfor_debit, series = "vforecast", lwd = 1, lty = "dashed")
 ```
 
+Корень из среднеквадратичной оценки предсказания:
+```{r}
+rmse <- function(true, pred) sqrt(mean((true - pred)^2))
+
+data.frame(
+  RMSE = c(rmse(debitcards, rfor_debit), rmse(debitcards, vfor_debit)),
+  row.names = c("rforecast", "vforecast")
+)
+```
 Теперь предскажем отдельно тренд:
 ```{r}
 rfor_debit_trend <- rforecast(eos_debit1, list(1:3), len = 24)
 vfor_debit_trend <- vforecast(eos_debit1, list(1:3), len = 24)
-xyplot(
-  cbind(debitcards, rfor_debit_trend, vfor_debit_trend),
-  superpose = TRUE,
-  lwd = c(1, 2, 2),
-  lty = c(1, 1, 2),
-  col = c("black", "red", "blue"),
-  auto.key = list(text = c("Original", "rforecast", "vforecast"), space = "top")
-)
+
+autoplot(debitcards, ylab = "") +
+  autolayer(rfor_debit_trend, series = "rforecast", lwd = 1) +
+  autolayer(vfor_debit_trend, series = "vforecast", lwd = 1, lty = "dashed")
 ```
 
 Только сезонность:
 ```{r}
 rfor_debit_season <- rforecast(eos_debit1, list(4:14),  24)
 vfor_debit_season <- vforecast(eos_debit1, list(4:14), 24)
-xyplot(
-  cbind(reos_debit1$Seasonality, rfor_debit_season, vfor_debit_season),
-  superpose = TRUE,
-  lwd = c(1, 2, 2),
-  lty = c(1, 1, 2),
-  col = c("black", "red", "blue"),
-  auto.key = list(text = c("Original", "rforecast", "vforecast"), space = "top")
-)
+
+autoplot(reos_debit1$Seasonality, ylab = "") +
+  autolayer(rfor_debit_season, series = "rforecast", lwd = 1) +
+  autolayer(vfor_debit_season, series = "vforecast", lwd = 1, lty = "dashed")
 ```
 
 
@@ -1697,22 +1690,20 @@ xyplot(
 Поскольку рекурентный прогноз оказался точнее, будем использовать именно его. Доверительные интервалы:
 ```{r}
 for_conf <- forecast(s_debit1, list(1:14), 24, interval = "conf")
-autoplot(for_conf, 50, ylab = "") +
-  autolayer(tail(debitcards, 50), color = "black") 
+autoplot(for_conf, flwd = 1, ylab = "")
 ```
 
 Предсказательные интервалы:
 ```{r}
 for_pred <- forecast(s_debit1, list(1:14), 24, interval = "pred")
-autoplot(for_pred, 50, ylab = "") +
-  autolayer(tail(debitcards, 50), color = "black") 
+autoplot(for_pred, flwd = 1, ylab = "")
 ```
 
-Предсказательные интервалы, как и ожидалось, шире, чем доверительные. Заметим, что для доберительных интервалов некоторые предсказанные значения лежат ниже нижней границы. Можно делать прогноз тоже бутстрепом:
+Предсказательные интервалы, как и ожидалось, шире, чем доверительные. Заметим, что предсказанные значения лежат ближе к нижней границе интервалов, а для доверительных интервалов некоторые значения лежат даже ниже ее. Можно делать прогноз тоже бутстрепом:
 ```{r}
-for_bootstrap <- forecast(s_debit1, list(1:14), 24, interval = "conf", only.intervals = FALSE)
-autoplot(for_bootstrap, 50, ylab = "") +
-  autolayer(tail(debitcards, 50), color = "black") 
+for_bootstrap <-
+  forecast(s_debit1, list(1:14), 24, interval = "pred", only.intervals = FALSE)
+autoplot(for_bootstrap, flwd = 1, ylab = "")
 ```
 
 
@@ -1721,7 +1712,7 @@ autoplot(for_bootstrap, 50, ylab = "") +
 debit_gapped <- debitcards
 window(debit_gapped, start = c(2004, 1), end = c(2005, 12)) <- NA
 debit_gap <- window(debitcards, start = c(2004, 1), end = c(2005, 12))
-xyplot(debit_gapped)
+autoplot(debit_gapped, ylab = "")
 ```
 
 ## Sequential
@@ -1729,70 +1720,42 @@ xyplot(debit_gapped)
 s <- ssa(debit_gapped, 48, svd.method = "svd")
 eos <- eossa_new(s, list(1:15), "distance", delta = 1e-5)
 
-g_original <- gapfill(eos, list(1:2), "original", "sequential")
-g_reconstructed <- gapfill(eos, list(1:2), "reconstructed", "sequential")
+go <- gapfill(eos, list(1:2), "original", "sequential")
+g <- gapfill(eos, list(1:2), "reconstructed", "sequential")
 
-xyplot(
-  cbind(debit_gap, g_original, g_reconstructed),
-  superpose = TRUE, 
-  col = c("grey", "blue", "red"),
-  lwd = 2,
-  auto.key = list(
-    text = c(
-      "Gap",
-      "gapfill(base = \"original\")",
-      "gapfill(base = \"reconstructed\")"
-    ),
-    space = "top"
-  )
-)
+autoplot(debitcards, ylab = "", color = "grey", lwd = 1) +
+  autolayer(go, series = "original", lwd = 1) +
+  autolayer(g, series = "reconstructed", lwd = 1)
 ```
 
 
 ## Simultaneous
 ```{r}
-g_original <- gapfill(eos, list(1:2), "original", "simultaneous")
-g_reconstructed <- gapfill(eos, list(1:2), "reconstructed", "simultaneous")
+go <- gapfill(eos, list(1:2), "original", "simultaneous")
+g <- gapfill(eos, list(1:2), "reconstructed", "simultaneous")
 
-xyplot(
-  cbind(debitcards, debit_gap, g_original, g_reconstructed),
-  superpose = TRUE, 
-  col = c("black", "grey", "blue", "red"),
-  lwd = 2,
-  auto.key = list(
-    text = c(
-      "Original",
-      "Gap",
-      "gapfill(base = \"original\")",
-      "gapfill(base = \"reconstructed\")"
-    ),
-    space = "top"
-  )
-)
+autoplot(debitcards, ylab = "") +
+  autolayer(debit_gap, color = "grey", lwd = 1) +
+  autolayer(go, series = "original", lwd = 1) +
+  autolayer(g, series = "reconstructed", lwd = 1)
 ```
 
 
 ## Iterative
 ```{r}
-ig0 <- igapfill(eos, list(1:2), base = "original")
+igo <- igapfill(eos, list(1:2), base = "original")
 ig <- igapfill(eos, list(1:2), base = "reconstructed")
-xyplot(
-  cbind(debitcards, ig0, ig),
-  superpose = TRUE,
-  col = c("grey", "blue", "red"),
-  lwd = 2,
-  auto.key = list(
-    text = c("Gap", "igapfill(base = \"original\")", "igapfill(base = \"reconstructed\")"),
-    space = "top"
-  )
-)
+
+autoplot(debit_gap, ylab = "", color = "grey", lwd = 1) +
+  autolayer(igo, series = "original", lwd = 1) +
+  autolayer(ig, series = "reconstructed", lwd = 1)
 ```
 
 ## Сравнение gapfill и igapfill
 ### Ряд без тренда
 ```{r}
 N <- length(signal2)
-xyplot(signal2)
+autoplot(signal2, ylab = "")
 ```
 
 ```{r}
@@ -1840,7 +1803,7 @@ ggplot(mse_end1) + geom_boxplot(aes(name, value)) + xlab("") + ylab("MSE")
 
 ### Ряд c трендом
 ```{r}
-xyplot(signal7)
+autoplot(signal7, ylab = "", lwd = 1)
 ```
 
 "Дырка" в середине:
@@ -1867,16 +1830,14 @@ plot(s, "vectors", idx = 1:10)
 ```
 
 ```{r}
-g <- gapfill(s, list(1:7), method = "simultaneous")
+g_seq <- gapfill(s, list(1:7), method = "sequential")
+g_simult <- gapfill(s, list(1:7), method = "simultaneous")
 ig <- igapfill(s, list(1:7), maxiter = 50)
 
-xyplot(
-  cbind(x2, g, ig),
-  superpose = TRUE,
-  lwd = 2,
-  col = c("grey", "red", "blue"),
-  auto.key = list(text = c("Original", "gapfill", "igapfill"), space = "top")
-)
+autoplot(x2, ylab = "", lwd = 1) +
+  autolayer(g_seq, series = "sequential", lwd = 1) +
+  autolayer(g_simult, series = "simultaneous", lwd = 1) +
+  autolayer(ig, series = "iterative", lwd = 1)
 ```
 
 
@@ -1979,12 +1940,7 @@ auto_fit
 checkresiduals(auto_fit, lag.max = 50)
 ```
 
-По IC модель ARIMA(2, 0, 0) заметно хуже ARIMA(3, 0, 1). Предскажем несколько точек:
-```{r}
-autoplot(forecast(auto_fit), include = 200, ylab = "")
-```
-
-На самом деле, истинная модель ARIMA(1, 0, 1), которая по IC близка к ARIMA(2, 0, 0).
+По IC модель ARIMA(2, 0, 0) заметно хуже ARIMA(3, 0, 1). На самом деле, истинная модель ARIMA(1, 0, 1), которая по IC близка к ARIMA(2, 0, 0).
 ```{r}
 ts5 <- as.ts(read.csv("./data/ts5.txt", sep=""))
 ggtsdisplay(ts5, plot.type = "partial", lag.max = 50)
@@ -2010,35 +1966,34 @@ checkresiduals(auto_fit, lag.max = 50)
 ```
 
 Наилучшей моделью оказалась ARIMA(3, 0, 0), которая и является истинной.
-```{r}
-autoplot(forecast(auto_fit), include = 200, ylab = "")
-```
 
 
 ## Реальные данные
+Автоматически подберем модель ARIMA для остатков после выделения тренда и сезонности с помощью SSA.
+
+
 ### Уровень воды реки Нил
 ```{r}
 rNile <- resid(r_NileMin)
 ggtsdisplay(rNile, plot.type = "partial", lag.max = 50)
 ```
 
-Автоматически подберем модель:
 ```{r}
 rNile_train <- head(rNile, -10)
 rNile_test <- tail(rNile, 10)
-model_Nile <- auto.arima(
+arima_Nile <- auto.arima(
   rNile_train,
   stationary = TRUE,
   stepwise = FALSE,
   approximation = FALSE
 )
-model_Nile
-checkresiduals(model_Nile, lag.max = 50)
+arima_Nile
+checkresiduals(arima_Nile, plot.type = "hist", lag.max = 50)
 ```
 
-Нет основания отвергать гипотезу о белом шуме, поэтому сделаем прогноз: 
+Нет основания отвергать гипотезу о белом шуме, поэтому сделаем прогноз. Поскольку остатки не похожи на нормальное распределение, предсказательные интервалы будем вычислять с помощью бутстрепа: 
 ```{r}
-autoplot(forecast(model_Nile), include = 200, ylab = "") +
+autoplot(forecast(arima_Nile, bootstrap = TRUE), include = 200, ylab = "") +
   autolayer(rNile_test, colour = FALSE)
 ```
 
@@ -2050,15 +2005,53 @@ ggtsdisplay(rdebit, plot.type = "partial", lag.max = 50)
 ```
 
 ```{r}
-model_debit <- auto.arima(
+arima_debit <- auto.arima(
   rdebit,
   stationary = TRUE,
   seasonal = FALSE,
   stepwise = FALSE,
   approximation = FALSE
 )
-model_debit
-checkresiduals(model_debit, lag.max = 50)
+arima_debit
+checkresiduals(arima_debit, lag.max = 50)
 ```
 
 Нулевая гипотеза о белом шуме отверглась, видимо, в ряде осталась часть сезонности. Предсказывать неверную модель смысла нет.
+
+
+# Seasonal ARIMA
+Подберем сезонную модель ARIMA для данных `debitcards` без двух периодов:
+```{r}
+sarima_debit <- auto.arima(
+  debit_trunc,
+  stepwise = FALSE,
+  lambda = "auto"
+)
+sarima_debit
+```
+
+Проверим остатки:
+```{r}
+checkresiduals(sarima_debit, plot.type = "hist", lag.max = 50)
+```
+
+Теперь гипотеза не отвергается, но остатки не распределены нормально. Посмотрим на прогноз с бутстреп-интервалами:
+```{r}
+for_sarima <- forecast(sarima_debit, 24, bootstrap = TRUE)
+autoplot(for_sarima, flwd = 1, ylab = "")
+```
+
+Сравним его с истинными значениями и с SSA прогнозом: 
+```{r}
+autoplot(tail(debitcards, 36), ylab = "") +
+  autolayer(for_sarima$mean, series = "SARIMA", lwd = 1) +
+  autolayer(rfor_debit, series = "SSA", lwd = 1, lty = "dashed")
+```
+
+Ошибки предсказаний:
+```{r}
+data.frame(
+  RMSE = c(rmse(debitcards, rfor_debit), rmse(debitcards, for_sarima$mean)),
+  row.names = c("SSA", "SARIMA")
+)
+```

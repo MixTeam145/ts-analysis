@@ -5,6 +5,7 @@ project:
   
 format:
   html:
+    fig-format: svg
     toc: true
     toc-location: left
     toc-depth: 2
@@ -15,5 +16,6 @@ execute:
   cache: true
   
 knitr:
-  opts_chunk: 
+  opts_chunk:
+    out-width: 100%
     comment: "##"
