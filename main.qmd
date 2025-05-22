@@ -285,8 +285,7 @@ ggtsdisplay(em_harmonic(N, 0.255))
 Белый шум:
 ```{r}
 set.seed(1234)
-wn <- rnorm(N)
-ggtsdisplay(wn)
+rnorm(N) |> ggtsdisplay()
 ```
 
 Красный шум:
@@ -294,8 +293,8 @@ ggtsdisplay(wn)
 set.seed(1234)
 phi <- 0.7
 rn_start <- rnorm(1, sd = 1 / sqrt(1 - phi^2))
-rn <- arima.sim(list(ar = phi), N, n.start = 1, start.innov = rn_start)
-ggtsdisplay(rn)
+arima.sim(list(ar = phi), N, n.start = 1, start.innov = rn_start) |>
+  ggtsdisplay()
 ```
 
 При увеличении длины ряда значение периодограммы в частоте, соответствующей гармонике, увеличивается, а в частотах, соответствующих шуму, остаются теми же.
@@ -313,6 +312,7 @@ ggarrange(per1 + ylim(0, max(per2$data$spectrum)), per2, nrow = 2)
 
 ```{r}
 set.seed(1234)
+rn_start <- rnorm(1, sd = 1 / sqrt(1 - phi^2))
 rn <- arima.sim(list(ar = phi), N, n.start = 1, start.innov = rn_start)
 
 per1 <- ggperiodogram(head(rn + cos4, 100))
@@ -1352,7 +1352,10 @@ $$
 generate_lrr(l, 10)
 ```
 
-Сигнал ранга $7$ с кратными корнями: $x_n=0.1n\cdot e^{0.025 n}\cos(2 \pi n / 10 + \pi / 2) + n\cdot e^{0.02n} + 10\cdot(-1)^n$:
+Сигнал ранга $7$ с кратными корнями:
+$$
+x_n=0.1n\cdot e^{0.025 n}\cos(2 \pi n / 10 + \pi / 2) + n\cdot e^{0.02n} + 10\cdot(-1)^n.
+$$
 ```{r}
 signal7 <- mapply(em_harmonic, N, c(0.1, 0, 0.5), c(0.1, 1, 10), c(0.025, 0.02, 0), c(pi / 2, 0, 0))
 signal7 <- ts((1:N) * rowSums(signal7[, 1:2]) + signal7[, 3])
@@ -1498,7 +1501,8 @@ xyplot(
 Возьмем сумму трех гармоник с близкими частотами.
 ```{r}
 set.seed(1234)
-x <- ts(mapply(em_harmonic, N, c(0.1, 0.092, 0.15), c(3, 1, 2)) |> rowSums() + 0.1 * rnorm(N))
+x <- mapply(em_harmonic, N, c(0.1, 0.092, 0.15), c(3, 1, 2)) |> rowSums()
+x <- ts(x + 0.1 * rnorm(N))
 s <- ssa(x)
 plot(s, "vectors")
 ```
@@ -1537,10 +1541,12 @@ plot(
 Усилим разделимость с помощью `eossa_new`.
 
 
-## Модельные примеры
+## Модельные ряды
 Возьмем те же ряды, на которых проверяли IOSSA.
 ```{r}
-x <- ts(mapply(em_harmonic, N, c(0.1, 0.092, 0.15), c(3, 1, 2)) |> rowSums() + 0.1 * rnorm(N))
+set.seed(1234)
+x <- mapply(em_harmonic, N, c(0.1, 0.092, 0.15), c(3, 1, 2)) |> rowSums()
+x <- ts(x + 0.1 * rnorm(N))
 s <- ssa(x)
 eos <- eossa_new(s, 1:6, clust_type = "distance")
 plot(reconstruct(eos, eos$iossa.groups), plot.method = "xyplot")
@@ -2054,4 +2060,131 @@ data.frame(
   RMSE = c(rmse(debitcards, rfor_debit), rmse(debitcards, for_sarima$mean)),
   row.names = c("SSA", "SARIMA")
 )
+```
+
+
+# Обнаружение разладки
+```{r}
+hfunc <- function(x, B = N %/% 4, T = N %/% 4, L = B %/% 2, neig = 10) {
+  h <- hmatr(x, B = B, T = T, L = L, neig = neig)
+  hf_diag <- c(rep(NA, T + B), h[row(h) == col(h) + B])
+  hf_row <- c(rep(NA, T), h[, 1])
+  
+  hf <-
+    data.frame(Time = time(x), diagonal = hf_diag, row = hf_row) |>
+    tidyr::pivot_longer(2:3)
+  
+  p <- ggplot(hf, aes(x = Time, y = value)) +
+    geom_line(aes(linetype = name, lwd = name), na.rm = TRUE) +
+    scale_linewidth_manual(values = c("diagonal" = 0.5, "row" = 1)) + 
+    scale_linetype_manual(values = c("diagonal" = "solid", "row" = "dashed")) + 
+    ylab("heterogeneity") +
+    theme_bw() +
+    theme(legend.position = "none")
+  
+  list(hmatr = h, plot = p)
+}
+```
+
+
+## Модельные ряды
+Изменение частоты:
+```{r}
+N <- 200
+Q <- 100
+x <- ts(numeric(N))
+x[1:Q] <- sin(2 * pi * 0.1 * (1:Q))
+x[(Q + 1):N] <- sin(2 * pi * 0.15 * ((Q + 1):N))
+
+hf <- hfunc(x, neig = 2)
+ggarrange(autoplot(x, ylab = ""), hf$plot, nrow = 2)
+```
+
+Сплошной линией нарисована диагональная функция разладки, а пунктирной --- строковая. Матрица разладки:
+```{r}
+pal <- rev(hcl.colors(256, "Grays"))
+plot(hf$hmatr, col = pal)
+```
+
+Увеличение ранга сигнала:
+```{r}
+x[1:Q] <- sin(2 * pi * 0.1 * (1:Q))
+x[(Q + 1):N] <- 0.8 * sin(2 * pi * 0.1 * ((Q + 1):N)) + 0.3 * sin(2 * pi * 0.2 * ((Q + 1):N))
+
+hf <- hfunc(x, L = 20, neig = 2)
+ggarrange(autoplot(x, ylab = ""), hf$plot, nrow = 2)
+```
+
+```{r}
+plot(hf$hmatr, col = pal)
+```
+
+Уменьшение ранга сигнала:
+```{r}
+x <- ts(rev(x))
+hf <- hfunc(x, L = 20, neig = 4)
+ggarrange(autoplot(x, ylab = ""), hf$plot, nrow = 2)
+```
+
+```{r}
+plot(hf$hmatr, col = pal)
+```
+
+Функция модуля:
+```{r}
+x[1:N] <- abs((1:N) - Q)
+hf <- hfunc(x, B = 40, T = 40, L = 20, neig = 2)
+ggarrange(autoplot(x, ylab = ""), hf$plot, nrow = 2)
+```
+
+```{r}
+plot(hf$hmatr, col = pal)
+```
+
+
+## Реальные ряды
+### Дебетовые карты
+Будем искать разладку в тренде, сперва удалим сезонность:
+```{r}
+s <- ssa(debitcards, 72, svd.method = "svd")
+eos <- eossa_new(s, list(1:14), "distance")
+r_eos <- reconstruct(eos, list(4:14))
+(p1 <- autoplot(resid(r_eos), ylab = ""))
+```
+
+```{r}
+plot(ssa(resid(r_eos)[1:48], L = 24), "vectors")
+```
+
+Будем брать первую компоненту разложения.
+```{r}
+hf <- hfunc(resid(r_eos), B = 48, T = 48, L = 24, neig = 1)
+ggarrange(p1, hf$plot, nrow = 2)
+```
+
+Функции разладки заметила изменение структуры ряда с начала $2005$ года и с середины $2008$ года, что видно по ряду. Матрица разладки:
+```{r}
+plot(hf$hmatr, col = pal)
+```
+
+
+### Индекс Dow-Jones
+```{r}
+data("dj", package = "fma")
+(p1 <- autoplot(dj, ylab = ""))
+```
+
+```{r}
+plot(ssa(dj[1:40], 20), "vector")
+```
+
+Будем описывать тренд двумя компонентами.
+```{r}
+hf <- hfunc(dj, B = 40, T = 40, L = 20, neig = 2)
+ggarrange(p1, hf$plot, nrow = 2)
+```
+
+Ряд имеет по крайней мере одну разладку в среднем, функции разладки это изменение и обнаружили. Матрица разладки:
+```{r}
+plot(hf$hmatr, col = pal)
 ```

@@ -180,7 +180,7 @@ window.Quarto = {
   <li><a href="#iterative-o-ssa" id="toc-iterative-o-ssa" class="nav-link" data-scroll-target="#iterative-o-ssa"><span class="header-section-number">14</span> Iterative O-SSA</a></li>
   <li><a href="#esprit-motivated-o-ssa" id="toc-esprit-motivated-o-ssa" class="nav-link" data-scroll-target="#esprit-motivated-o-ssa"><span class="header-section-number">15</span> Esprit-motivated O-SSA</a>
   <ul class="collapse">
-  <li><a href="#модельные-примеры" id="toc-модельные-примеры" class="nav-link" data-scroll-target="#модельные-примеры"><span class="header-section-number">15.1</span> Модельные примеры</a></li>
+  <li><a href="#модельные-ряды" id="toc-модельные-ряды" class="nav-link" data-scroll-target="#модельные-ряды"><span class="header-section-number">15.1</span> Модельные ряды</a></li>
   <li><a href="#реальные-данные-4" id="toc-реальные-данные-4" class="nav-link" data-scroll-target="#реальные-данные-4"><span class="header-section-number">15.2</span> Реальные данные</a></li>
   </ul></li>
   <li><a href="#classical-seasonal-decomposition-и-stl" id="toc-classical-seasonal-decomposition-и-stl" class="nav-link" data-scroll-target="#classical-seasonal-decomposition-и-stl"><span class="header-section-number">16</span> Classical seasonal decomposition и STL</a></li>
@@ -197,10 +197,15 @@ window.Quarto = {
   </ul></li>
   <li><a href="#процессы-arima" id="toc-процессы-arima" class="nav-link" data-scroll-target="#процессы-arima"><span class="header-section-number">19</span> Процессы ARIMA</a>
   <ul class="collapse">
-  <li><a href="#модельные-ряды" id="toc-модельные-ряды" class="nav-link" data-scroll-target="#модельные-ряды"><span class="header-section-number">19.1</span> Модельные ряды</a></li>
+  <li><a href="#модельные-ряды-1" id="toc-модельные-ряды-1" class="nav-link" data-scroll-target="#модельные-ряды-1"><span class="header-section-number">19.1</span> Модельные ряды</a></li>
   <li><a href="#реальные-данные-5" id="toc-реальные-данные-5" class="nav-link" data-scroll-target="#реальные-данные-5"><span class="header-section-number">19.2</span> Реальные данные</a></li>
   </ul></li>
   <li><a href="#seasonal-arima" id="toc-seasonal-arima" class="nav-link" data-scroll-target="#seasonal-arima"><span class="header-section-number">20</span> Seasonal ARIMA</a></li>
+  <li><a href="#обнаружение-разладки" id="toc-обнаружение-разладки" class="nav-link" data-scroll-target="#обнаружение-разладки"><span class="header-section-number">21</span> Обнаружение разладки</a>
+  <ul class="collapse">
+  <li><a href="#модельные-ряды-2" id="toc-модельные-ряды-2" class="nav-link" data-scroll-target="#модельные-ряды-2"><span class="header-section-number">21.1</span> Модельные ряды</a></li>
+  <li><a href="#реальные-ряды" id="toc-реальные-ряды" class="nav-link" data-scroll-target="#реальные-ряды"><span class="header-section-number">21.2</span> Реальные ряды</a></li>
+  </ul></li>
   </ul>
 </nav>
 </nav>
@@ -302,8 +307,7 @@ window.Quarto = {
 <p>Белый шум:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>wn <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtsdisplay</span>(wn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(N) <span class="sc">|&gt;</span> <span class="fu">ggtsdisplay</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -317,8 +321,8 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>phi <span class="ot">&lt;-</span> <span class="fl">0.7</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>rn_start <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> phi<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>rn <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">ar =</span> phi), N, <span class="at">n.start =</span> <span class="dv">1</span>, <span class="at">start.innov =</span> rn_start)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtsdisplay</span>(rn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">ar =</span> phi), N, <span class="at">n.start =</span> <span class="dv">1</span>, <span class="at">start.innov =</span> rn_start) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtsdisplay</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -348,12 +352,13 @@ window.Quarto = {
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rn <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">ar =</span> phi), N, <span class="at">n.start =</span> <span class="dv">1</span>, <span class="at">start.innov =</span> rn_start)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>per1 <span class="ot">&lt;-</span> <span class="fu">ggperiodogram</span>(<span class="fu">head</span>(rn <span class="sc">+</span> cos4, <span class="dv">100</span>))</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>per2 <span class="ot">&lt;-</span> <span class="fu">ggperiodogram</span>(rn <span class="sc">+</span> cos4)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(per1 <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fu">max</span>(per2<span class="sc">$</span>data<span class="sc">$</span>spectrum)), per2, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rn_start <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> phi<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>rn <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">ar =</span> phi), N, <span class="at">n.start =</span> <span class="dv">1</span>, <span class="at">start.innov =</span> rn_start)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>per1 <span class="ot">&lt;-</span> <span class="fu">ggperiodogram</span>(<span class="fu">head</span>(rn <span class="sc">+</span> cos4, <span class="dv">100</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>per2 <span class="ot">&lt;-</span> <span class="fu">ggperiodogram</span>(rn <span class="sc">+</span> cos4)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(per1 <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fu">max</span>(per2<span class="sc">$</span>data<span class="sc">$</span>spectrum)), per2, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1861,7 +1866,9 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <pre><code>##  [1]  1  1  2  3  5  8 13 21 34 55</code></pre>
 </div>
 </div>
-<p>Сигнал ранга <span class="math inline">\(7\)</span> с кратными корнями: <span class="math inline">\(x_n=0.1n\cdot e^{0.025 n}\cos(2 \pi n / 10 + \pi / 2) + n\cdot e^{0.02n} + 10\cdot(-1)^n\)</span>:</p>
+<p>Сигнал ранга <span class="math inline">\(7\)</span> с кратными корнями: <span class="math display">\[
+x_n=0.1n\cdot e^{0.025 n}\cos(2 \pi n / 10 + \pi / 2) + n\cdot e^{0.02n} + 10\cdot(-1)^n.
+\]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>signal7 <span class="ot">&lt;-</span> <span class="fu">mapply</span>(em_harmonic, N, <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.5</span>), <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>), <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.02</span>, <span class="dv">0</span>), <span class="fu">c</span>(pi <span class="sc">/</span> <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
 <span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>signal7 <span class="ot">&lt;-</span> <span class="fu">ts</span>((<span class="dv">1</span><span class="sc">:</span>N) <span class="sc">*</span> <span class="fu">rowSums</span>(signal7[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]) <span class="sc">+</span> signal7[, <span class="dv">3</span>])</span>
@@ -2171,9 +2178,10 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <p>Возьмем сумму трех гармоник с близкими частотами.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">mapply</span>(em_harmonic, N, <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.092</span>, <span class="fl">0.15</span>), <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">|&gt;</span> <span class="fu">rowSums</span>() <span class="sc">+</span> <span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">rnorm</span>(N))</span>
-<span id="cb142-3"><a href="#cb142-3" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
-<span id="cb142-4"><a href="#cb142-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s, <span class="st">"vectors"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">mapply</span>(em_harmonic, N, <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.092</span>, <span class="fl">0.15</span>), <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">|&gt;</span> <span class="fu">rowSums</span>()</span>
+<span id="cb142-3"><a href="#cb142-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(x <span class="sc">+</span> <span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">rnorm</span>(N))</span>
+<span id="cb142-4"><a href="#cb142-4" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
+<span id="cb142-5"><a href="#cb142-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s, <span class="st">"vectors"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2237,14 +2245,16 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 <section id="esprit-motivated-o-ssa" class="level1" data-number="15">
 <h1 data-number="15"><span class="header-section-number">15</span> Esprit-motivated O-SSA</h1>
 <p>Усилим разделимость с помощью <code>eossa_new</code>.</p>
-<section id="модельные-примеры" class="level2" data-number="15.1">
-<h2 data-number="15.1" class="anchored" data-anchor-id="модельные-примеры"><span class="header-section-number">15.1</span> Модельные примеры</h2>
+<section id="модельные-ряды" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="модельные-ряды"><span class="header-section-number">15.1</span> Модельные ряды</h2>
 <p>Возьмем те же ряды, на которых проверяли IOSSA.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">mapply</span>(em_harmonic, N, <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.092</span>, <span class="fl">0.15</span>), <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">|&gt;</span> <span class="fu">rowSums</span>() <span class="sc">+</span> <span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">rnorm</span>(N))</span>
-<span id="cb147-2"><a href="#cb147-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
-<span id="cb147-3"><a href="#cb147-3" aria-hidden="true" tabindex="-1"></a>eos <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">clust_type =</span> <span class="st">"distance"</span>)</span>
-<span id="cb147-4"><a href="#cb147-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">reconstruct</span>(eos, eos<span class="sc">$</span>iossa.groups), <span class="at">plot.method =</span> <span class="st">"xyplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb147-2"><a href="#cb147-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">mapply</span>(em_harmonic, N, <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.092</span>, <span class="fl">0.15</span>), <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">|&gt;</span> <span class="fu">rowSums</span>()</span>
+<span id="cb147-3"><a href="#cb147-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(x <span class="sc">+</span> <span class="fl">0.1</span> <span class="sc">*</span> <span class="fu">rnorm</span>(N))</span>
+<span id="cb147-4"><a href="#cb147-4" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(x)</span>
+<span id="cb147-5"><a href="#cb147-5" aria-hidden="true" tabindex="-1"></a>eos <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">clust_type =</span> <span class="st">"distance"</span>)</span>
+<span id="cb147-6"><a href="#cb147-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">reconstruct</span>(eos, eos<span class="sc">$</span>iossa.groups), <span class="at">plot.method =</span> <span class="st">"xyplot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2822,8 +2832,8 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 </section>
 <section id="процессы-arima" class="level1" data-number="19">
 <h1 data-number="19"><span class="header-section-number">19</span> Процессы ARIMA</h1>
-<section id="модельные-ряды" class="level2" data-number="19.1">
-<h2 data-number="19.1" class="anchored" data-anchor-id="модельные-ряды"><span class="header-section-number">19.1</span> Модельные ряды</h2>
+<section id="модельные-ряды-1" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="модельные-ряды-1"><span class="header-section-number">19.1</span> Модельные ряды</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb192"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb192-1"><a href="#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb192-2"><a href="#cb192-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.1</span>)), <span class="at">n =</span> <span class="dv">10000</span>)</span>
@@ -3487,8 +3497,236 @@ F_n = \frac{\left(\frac{1 + \sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\rig
 ## SARIMA  779.4278</code></pre>
 </div>
 </div>
+</section>
+<section id="обнаружение-разладки" class="level1" data-number="21">
+<h1 data-number="21"><span class="header-section-number">21</span> Обнаружение разладки</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb256"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb256-1"><a href="#cb256-1" aria-hidden="true" tabindex="-1"></a>hfunc <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">B =</span> N <span class="sc">%/%</span> <span class="dv">4</span>, <span class="at">T =</span> N <span class="sc">%/%</span> <span class="dv">4</span>, <span class="at">L =</span> B <span class="sc">%/%</span> <span class="dv">2</span>, <span class="at">neig =</span> <span class="dv">10</span>) {</span>
+<span id="cb256-2"><a href="#cb256-2" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="fu">hmatr</span>(x, <span class="at">B =</span> B, <span class="at">T =</span> T, <span class="at">L =</span> L, <span class="at">neig =</span> neig)</span>
+<span id="cb256-3"><a href="#cb256-3" aria-hidden="true" tabindex="-1"></a>  hf_diag <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="cn">NA</span>, T <span class="sc">+</span> B), h[<span class="fu">row</span>(h) <span class="sc">==</span> <span class="fu">col</span>(h) <span class="sc">+</span> B])</span>
+<span id="cb256-4"><a href="#cb256-4" aria-hidden="true" tabindex="-1"></a>  hf_row <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="cn">NA</span>, T), h[, <span class="dv">1</span>])</span>
+<span id="cb256-5"><a href="#cb256-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb256-6"><a href="#cb256-6" aria-hidden="true" tabindex="-1"></a>  hf <span class="ot">&lt;-</span></span>
+<span id="cb256-7"><a href="#cb256-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">Time =</span> <span class="fu">time</span>(x), <span class="at">diagonal =</span> hf_diag, <span class="at">row =</span> hf_row) <span class="sc">|&gt;</span></span>
+<span id="cb256-8"><a href="#cb256-8" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb256-9"><a href="#cb256-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb256-10"><a href="#cb256-10" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(hf, <span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> value)) <span class="sc">+</span></span>
+<span id="cb256-11"><a href="#cb256-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> name, <span class="at">lwd =</span> name), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb256-12"><a href="#cb256-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_linewidth_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"diagonal"</span> <span class="ot">=</span> <span class="fl">0.5</span>, <span class="st">"row"</span> <span class="ot">=</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb256-13"><a href="#cb256-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"diagonal"</span> <span class="ot">=</span> <span class="st">"solid"</span>, <span class="st">"row"</span> <span class="ot">=</span> <span class="st">"dashed"</span>)) <span class="sc">+</span> </span>
+<span id="cb256-14"><a href="#cb256-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">"heterogeneity"</span>) <span class="sc">+</span></span>
+<span id="cb256-15"><a href="#cb256-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb256-16"><a href="#cb256-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb256-17"><a href="#cb256-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb256-18"><a href="#cb256-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">hmatr =</span> h, <span class="at">plot =</span> p)</span>
+<span id="cb256-19"><a href="#cb256-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="модельные-ряды-2" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="модельные-ряды-2"><span class="header-section-number">21.1</span> Модельные ряды</h2>
+<p>Изменение частоты:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb257"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb257-1"><a href="#cb257-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb257-2"><a href="#cb257-2" aria-hidden="true" tabindex="-1"></a>Q <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb257-3"><a href="#cb257-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">numeric</span>(N))</span>
+<span id="cb257-4"><a href="#cb257-4" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span><span class="sc">:</span>Q] <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fl">0.1</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">:</span>Q))</span>
+<span id="cb257-5"><a href="#cb257-5" aria-hidden="true" tabindex="-1"></a>x[(Q <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>N] <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fl">0.15</span> <span class="sc">*</span> ((Q <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>N))</span>
+<span id="cb257-6"><a href="#cb257-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb257-7"><a href="#cb257-7" aria-hidden="true" tabindex="-1"></a>hf <span class="ot">&lt;-</span> <span class="fu">hfunc</span>(x, <span class="at">neig =</span> <span class="dv">2</span>)</span>
+<span id="cb257-8"><a href="#cb257-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(<span class="fu">autoplot</span>(x, <span class="at">ylab =</span> <span class="st">""</span>), hf<span class="sc">$</span>plot, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-176-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Сплошной линией нарисована диагональная функция разладки, а пунктирной — строковая. Матрица разладки:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb258"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb258-1"><a href="#cb258-1" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">hcl.colors</span>(<span class="dv">256</span>, <span class="st">"Grays"</span>))</span>
+<span id="cb258-2"><a href="#cb258-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hf<span class="sc">$</span>hmatr, <span class="at">col =</span> pal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-177-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Увеличение ранга сигнала:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb259"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb259-1"><a href="#cb259-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span><span class="sc">:</span>Q] <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fl">0.1</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">:</span>Q))</span>
+<span id="cb259-2"><a href="#cb259-2" aria-hidden="true" tabindex="-1"></a>x[(Q <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>N] <span class="ot">&lt;-</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fl">0.1</span> <span class="sc">*</span> ((Q <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>N)) <span class="sc">+</span> <span class="fl">0.3</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fl">0.2</span> <span class="sc">*</span> ((Q <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>N))</span>
+<span id="cb259-3"><a href="#cb259-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-4"><a href="#cb259-4" aria-hidden="true" tabindex="-1"></a>hf <span class="ot">&lt;-</span> <span class="fu">hfunc</span>(x, <span class="at">L =</span> <span class="dv">20</span>, <span class="at">neig =</span> <span class="dv">2</span>)</span>
+<span id="cb259-5"><a href="#cb259-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(<span class="fu">autoplot</span>(x, <span class="at">ylab =</span> <span class="st">""</span>), hf<span class="sc">$</span>plot, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-178-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb260"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb260-1"><a href="#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hf<span class="sc">$</span>hmatr, <span class="at">col =</span> pal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-179-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Уменьшение ранга сигнала:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb261"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb261-1"><a href="#cb261-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">rev</span>(x))</span>
+<span id="cb261-2"><a href="#cb261-2" aria-hidden="true" tabindex="-1"></a>hf <span class="ot">&lt;-</span> <span class="fu">hfunc</span>(x, <span class="at">L =</span> <span class="dv">20</span>, <span class="at">neig =</span> <span class="dv">4</span>)</span>
+<span id="cb261-3"><a href="#cb261-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(<span class="fu">autoplot</span>(x, <span class="at">ylab =</span> <span class="st">""</span>), hf<span class="sc">$</span>plot, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-180-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb262"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb262-1"><a href="#cb262-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hf<span class="sc">$</span>hmatr, <span class="at">col =</span> pal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-181-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Функция модуля:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb263"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb263-1"><a href="#cb263-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span><span class="sc">:</span>N] <span class="ot">&lt;-</span> <span class="fu">abs</span>((<span class="dv">1</span><span class="sc">:</span>N) <span class="sc">-</span> Q)</span>
+<span id="cb263-2"><a href="#cb263-2" aria-hidden="true" tabindex="-1"></a>hf <span class="ot">&lt;-</span> <span class="fu">hfunc</span>(x, <span class="at">B =</span> <span class="dv">40</span>, <span class="at">T =</span> <span class="dv">40</span>, <span class="at">L =</span> <span class="dv">20</span>, <span class="at">neig =</span> <span class="dv">2</span>)</span>
+<span id="cb263-3"><a href="#cb263-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(<span class="fu">autoplot</span>(x, <span class="at">ylab =</span> <span class="st">""</span>), hf<span class="sc">$</span>plot, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-182-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb264"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb264-1"><a href="#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hf<span class="sc">$</span>hmatr, <span class="at">col =</span> pal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-183-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="реальные-ряды" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="реальные-ряды"><span class="header-section-number">21.2</span> Реальные ряды</h2>
+<section id="дебетовые-карты-5" class="level3" data-number="21.2.1">
+<h3 data-number="21.2.1" class="anchored" data-anchor-id="дебетовые-карты-5"><span class="header-section-number">21.2.1</span> Дебетовые карты</h3>
+<p>Будем искать разладку в тренде, сперва удалим сезонность:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb265"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb265-1"><a href="#cb265-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(debitcards, <span class="dv">72</span>, <span class="at">svd.method =</span> <span class="st">"svd"</span>)</span>
+<span id="cb265-2"><a href="#cb265-2" aria-hidden="true" tabindex="-1"></a>eos <span class="ot">&lt;-</span> <span class="fu">eossa_new</span>(s, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>), <span class="st">"distance"</span>)</span>
+<span id="cb265-3"><a href="#cb265-3" aria-hidden="true" tabindex="-1"></a>r_eos <span class="ot">&lt;-</span> <span class="fu">reconstruct</span>(eos, <span class="fu">list</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">14</span>))</span>
+<span id="cb265-4"><a href="#cb265-4" aria-hidden="true" tabindex="-1"></a>(p1 <span class="ot">&lt;-</span> <span class="fu">autoplot</span>(<span class="fu">resid</span>(r_eos), <span class="at">ylab =</span> <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-184-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb266"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb266-1"><a href="#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ssa</span>(<span class="fu">resid</span>(r_eos)[<span class="dv">1</span><span class="sc">:</span><span class="dv">48</span>], <span class="at">L =</span> <span class="dv">24</span>), <span class="st">"vectors"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-185-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Будем брать первую компоненту разложения.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb267"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb267-1"><a href="#cb267-1" aria-hidden="true" tabindex="-1"></a>hf <span class="ot">&lt;-</span> <span class="fu">hfunc</span>(<span class="fu">resid</span>(r_eos), <span class="at">B =</span> <span class="dv">48</span>, <span class="at">T =</span> <span class="dv">48</span>, <span class="at">L =</span> <span class="dv">24</span>, <span class="at">neig =</span> <span class="dv">1</span>)</span>
+<span id="cb267-2"><a href="#cb267-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(p1, hf<span class="sc">$</span>plot, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-186-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Функции разладки заметила изменение структуры ряда с начала <span class="math inline">\(2005\)</span> года и с середины <span class="math inline">\(2008\)</span> года, что видно по ряду. Матрица разладки:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb268"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb268-1"><a href="#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hf<span class="sc">$</span>hmatr, <span class="at">col =</span> pal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-187-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="индекс-dow-jones" class="level3" data-number="21.2.2">
+<h3 data-number="21.2.2" class="anchored" data-anchor-id="индекс-dow-jones"><span class="header-section-number">21.2.2</span> Индекс Dow-Jones</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb269"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb269-1"><a href="#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"dj"</span>, <span class="at">package =</span> <span class="st">"fma"</span>)</span>
+<span id="cb269-2"><a href="#cb269-2" aria-hidden="true" tabindex="-1"></a>(p1 <span class="ot">&lt;-</span> <span class="fu">autoplot</span>(dj, <span class="at">ylab =</span> <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-188-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb270"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb270-1"><a href="#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ssa</span>(dj[<span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>], <span class="dv">20</span>), <span class="st">"vector"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-189-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Будем описывать тренд двумя компонентами.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb271"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb271-1"><a href="#cb271-1" aria-hidden="true" tabindex="-1"></a>hf <span class="ot">&lt;-</span> <span class="fu">hfunc</span>(dj, <span class="at">B =</span> <span class="dv">40</span>, <span class="at">T =</span> <span class="dv">40</span>, <span class="at">L =</span> <span class="dv">20</span>, <span class="at">neig =</span> <span class="dv">2</span>)</span>
+<span id="cb271-2"><a href="#cb271-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(p1, hf<span class="sc">$</span>plot, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-190-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ряд имеет по крайней мере одну разладку в среднем, функции разладки это изменение и обнаружили. Матрица разладки:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb272"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb272-1"><a href="#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hf<span class="sc">$</span>hmatr, <span class="at">col =</span> pal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-191-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
