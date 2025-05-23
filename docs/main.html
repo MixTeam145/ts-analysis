@@ -216,9 +216,7 @@ window.Quarto = {
   <li><a href="#mssa" id="toc-mssa" class="nav-link" data-scroll-target="#mssa"><span class="header-section-number">23</span> MSSA</a>
   <ul class="collapse">
   <li><a href="#сравнение-с-ssa" id="toc-сравнение-с-ssa" class="nav-link" data-scroll-target="#сравнение-с-ssa"><span class="header-section-number">23.1</span> Сравнение с SSA</a></li>
-  <li><a href="#одинаковая-структура" id="toc-одинаковая-структура" class="nav-link" data-scroll-target="#одинаковая-структура"><span class="header-section-number">23.2</span> Одинаковая структура</a></li>
-  <li><a href="#разная-структура" id="toc-разная-структура" class="nav-link" data-scroll-target="#разная-структура"><span class="header-section-number">23.3</span> Разная структура</a></li>
-  <li><a href="#поддерживающий-ряд" id="toc-поддерживающий-ряд" class="nav-link" data-scroll-target="#поддерживающий-ряд"><span class="header-section-number">23.4</span> Поддерживающий ряд</a></li>
+  <li><a href="#поддерживающий-ряд" id="toc-поддерживающий-ряд" class="nav-link" data-scroll-target="#поддерживающий-ряд"><span class="header-section-number">23.2</span> Поддерживающий ряд</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -4046,9 +4044,8 @@ x_n=0.1n\cdot e^{0.025 n}\cos(2 \pi n / 10 + \pi / 2) + n\cdot e^{0.02n} + 10\cd
 <div class="sourceCode cell-code" id="cb286"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb286-1"><a href="#cb286-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
 <span id="cb286-2"><a href="#cb286-2" aria-hidden="true" tabindex="-1"></a>Ls <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">90</span>)</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="одинаковая-структура" class="level2" data-number="23.2">
-<h2 data-number="23.2" class="anchored" data-anchor-id="одинаковая-структура"><span class="header-section-number">23.2</span> Одинаковая структура</h2>
+<section id="одинаковая-структура" class="level3" data-number="23.1.1">
+<h3 data-number="23.1.1" class="anchored" data-anchor-id="одинаковая-структура"><span class="header-section-number">23.1.1</span> Одинаковая структура</h3>
 <p>Возьмем косинусы с одинаковой частотой.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb287"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb287-1"><a href="#cb287-1" aria-hidden="true" tabindex="-1"></a>signal_channel <span class="ot">&lt;-</span> <span class="fu">em_harmonic</span>(N, <span class="dv">1</span> <span class="sc">/</span> <span class="dv">12</span>)</span>
@@ -4091,8 +4088,8 @@ x_n=0.1n\cdot e^{0.025 n}\cos(2 \pi n / 10 + \pi / 2) + n\cdot e^{0.02n} + 10\cd
 </div>
 </div>
 </section>
-<section id="разная-структура" class="level2" data-number="23.3">
-<h2 data-number="23.3" class="anchored" data-anchor-id="разная-структура"><span class="header-section-number">23.3</span> Разная структура</h2>
+<section id="разная-структура" class="level3" data-number="23.1.2">
+<h3 data-number="23.1.2" class="anchored" data-anchor-id="разная-структура"><span class="header-section-number">23.1.2</span> Разная структура</h3>
 <p>В качестве сигнала рассмотрим экспоненты с разными показателями.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb290"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb290-1"><a href="#cb290-1" aria-hidden="true" tabindex="-1"></a>signal2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">em_harmonic</span>(N, <span class="dv">0</span>, <span class="at">a =</span> <span class="fl">0.05</span>), <span class="fu">em_harmonic</span>(N, <span class="dv">0</span>, <span class="at">a =</span> <span class="fl">0.025</span>))</span>
@@ -4134,8 +4131,9 @@ x_n=0.1n\cdot e^{0.025 n}\cos(2 \pi n / 10 + \pi / 2) + n\cdot e^{0.02n} + 10\cd
 </div>
 </div>
 </section>
-<section id="поддерживающий-ряд" class="level2" data-number="23.4">
-<h2 data-number="23.4" class="anchored" data-anchor-id="поддерживающий-ряд"><span class="header-section-number">23.4</span> Поддерживающий ряд</h2>
+</section>
+<section id="поддерживающий-ряд" class="level2" data-number="23.2">
+<h2 data-number="23.2" class="anchored" data-anchor-id="поддерживающий-ряд"><span class="header-section-number">23.2</span> Поддерживающий ряд</h2>
 <p>Пусть у нас есть два ряда. Второй ряд называют поддерживающим, если при его учитывании ошибки восстановления сигнала первого ряда становятся меньше. Посмотрим, как от уровня шума во втором ряде зависит, является ли он поддерживающим. Поскольку в предыдущем разделе мы убедились, что MSSA точнее, когда каналы имеют одинаковую структуру, будем рассматривать имеенно этот случай.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb293"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb293-1"><a href="#cb293-1" aria-hidden="true" tabindex="-1"></a>support_errors <span class="ot">&lt;-</span> <span class="cf">function</span>(signal, L, groups, sds, <span class="at">M =</span> <span class="dv">500</span>) {</span>
