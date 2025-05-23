@@ -1876,6 +1876,8 @@ autoplot(signal2, ylab = "")
 ```
 
 ```{r}
+#| cache: false
+
 # Setting up parallel computing
 plan(multisession, workers = min(15, detectCores() - 1))
 registerDoFuture()
@@ -2196,7 +2198,8 @@ autoplot(tail(debitcards, 36), ylab = "") +
 Ошибки предсказаний:
 
 ```{r}
-rmse_debit <- rmse_debit |> add_row(Method = "SARIMA", RMSE = rmse(debitcards, for_sarima$mean))
+rmse_debit <- rmse_debit |>
+  add_row(Method = "SARIMA", RMSE = rmse(debitcards, for_sarima$mean))
 rmse_debit |> arrange(RMSE)
 ```
 
@@ -2416,3 +2419,159 @@ rmse_debit |> arrange(RMSE)
 ```
 
 ETS оказалась по точности между SARIMA и SSA, причем модель с затухающим трендом оказалась хуже, но разница небольшая.
+
+# MSSA
+
+## Сравнение с SSA
+
+Будем рассматривать только модельные ряды. Проверим, что если каналы имеют одинаковую структуру, то MSSA точнее выделяется сигнал, чем SSA. Шум будем рассматривать для простоты белый.
+
+```{r}
+mssa_errors <- function(signal,
+                        L,
+                        groups_mssa,
+                        groups_ssa = groups_mssa,
+                        M = 500,
+                        ...) {
+  N <- nrow(signal)
+  mse <- foreach(i = 1:M) %dorng% {
+    f <- signal + cbind(rnorm(N, ...), rnorm(N, ...))
+    f1 <- f[, 1]
+    f2 <- f[, 2]
+    
+    s <- ssa(f, L, kind = "mssa", svd.method = "svd")
+    s1 <- ssa(f1, L, kind = "1d-ssa", svd.method = "svd")
+    s2 <- ssa(f2, L, kind = "1d-ssa", svd.method = "svd")
+   
+    r <- reconstruct(s, groups_mssa)[[1]]
+    r1 <- reconstruct(s1, groups_ssa)[[1]]
+    r2 <- reconstruct(s2, groups_ssa)[[1]]
+   
+    mse1 <- mean((r1 - signal[, 1])^2)
+    mse2 <- mean((r2 - signal[, 2])^2)
+    
+    c(mean((r - signal)^2), (mse1 + mse2) / 2)
+  }
+  mse <- do.call(rbind, mse) |> data.frame(L = rep(L, M))
+  colnames(mse) <- c("mssa", "ssa", "L")
+  mse
+}
+```
+
+Будем рассмотривать ряды длинны $N=100$ и $L\in\{10, 20, 50, 80, 90\}$.
+
+```{r}
+N <- 100
+Ls <- c(10, 20, 50, 80, 90)
+```
+
+## Одинаковая структура
+
+Возьмем косинусы с одинаковой частотой.
+
+```{r}
+signal_channel <- em_harmonic(N, 1 / 12)
+signal1 <- cbind(2 * signal_channel, 1.5 * signal_channel, deparse.level = 0)
+autoplot(ts(signal1), facets = TRUE, ylab = "")
+```
+
+```{r}
+x <- signal1 + rnorm(N)
+plot(ssa(x, kind = "mssa"), "vectors")
+```
+
+Ранг равен $2$, как и ранг каждого канала.
+
+```{r}
+set.seed(123)
+mse1 <- lapply(Ls, function(L) mssa_errors(signal1, L, list(1:2))) |>
+  bind_rows() |>
+  pivot_longer(1:2) |>
+  mutate(L = factor(L, levels = Ls))
+
+ggplot(mse1, aes(L, value, fill = name)) + geom_boxplot() + ylab("MSE")
+```
+
+## Разная структура
+
+В качестве сигнала рассмотрим экспоненты с разными показателями.
+
+```{r}
+signal2 <- cbind(em_harmonic(N, 0, a = 0.05), em_harmonic(N, 0, a = 0.025))
+autoplot(ts(signal2), facets = TRUE, ylab = "")
+```
+
+```{r}
+x <- signal2 + rnorm(N)
+plot(ssa(x, kind = "mssa"), "vectors")
+```
+
+В случае разной структуры ранг равен сумме рангов каналов.
+
+```{r}
+set.seed(123)
+mse2 <- lapply(Ls, function(L) mssa_errors(signal2, L, list(1:2), list(1))) |>
+  bind_rows() |>
+  pivot_longer(1:2) |>
+  mutate(L = factor(L, levels = Ls))
+
+ggplot(mse2, aes(L, value, fill = name)) + geom_boxplot() + ylab("MSE")
+```
+
+## Поддерживающий ряд
+
+Пусть у нас есть два ряда. Второй ряд называют поддерживающим, если при его учитывании ошибки восстановления сигнала первого ряда становятся меньше. Посмотрим, как от уровня шума во втором ряде зависит, является ли он поддерживающим. Поскольку в предыдущем разделе мы убедились, что MSSA точнее, когда каналы имеют одинаковую структуру, будем рассматривать имеенно этот случай.
+
+```{r}
+support_errors <- function(signal, L, groups, sds, M = 500) {
+  N <- nrow(signal)
+  mse <- foreach(i = 1:M) %dorng% {
+    noise1 <- rnorm(N)
+    noise2 <- rnorm(N)
+    
+    f <- lapply(sds, function(sd) signal + cbind(noise1, sd * noise2)) 
+    f1 <- f[[1]][, 1]
+    
+    sl <- lapply(
+      seq_along(sds),
+      function(i) ssa(f[[i]], L, kind = "mssa", svd.method = "svd")
+    )
+    s1 <- ssa(f1, L, kind = "1d-ssa", svd.method = "svd")
+   
+    rl <- lapply(
+      seq_along(sds),
+      function(i) reconstruct(sl[[i]], groups)[[1]][, 1]
+    )
+    r1 <- reconstruct(s1, groups)[[1]]
+   
+    mse_mssa <- sapply(
+      seq_along(sds),
+      function(i) mean((rl[[i]] - signal[, 1])^2)
+    )
+    mse_ssa <- mean((r1 - signal[, 1])^2)
+    
+    c(mse_mssa, mse_ssa) 
+  }
+  mse <- do.call(rbind, mse) |> data.frame()
+  colnames(mse) <- c(paste0("sigma=", sds), "ssa")
+  mse
+}
+```
+
+Зафиксируем $L=50$. Рассмотрим стандартное отклонение шума $\sigma=1$ в первом ряде и $\sigma\in[1, 5]$ во втором.
+
+```{r}
+L <- 50
+sds <- seq(1, 5, 0.1)
+
+set.seed(123)
+mse_support <- support_errors(signal1, L, list(1:2), sds)
+
+data.frame(sigma = sds, MSE = colMeans(mse_support |> select(-ssa))) |>
+  ggplot(aes(sigma, MSE)) +
+  geom_line() +
+  geom_hline(yintercept = mean(mse_support$ssa), lty = "dashed") +
+  scale_y_log10()
+```
+
+Пунктиром обозначена ошибка восстановления сигнала методом SSA. Как видим, начиная с $\sigma=2.2$, второй ряд перестает быть поддерживающим.

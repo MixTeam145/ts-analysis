@@ -2,7 +2,9 @@ project:
   title: "ts-analysis"
   type: website
   output-dir: docs
-  
+
+lang: ru
+
 format:
   html:
     fig-format: svg
@@ -10,7 +12,7 @@ format:
     toc: true
     toc-location: left
     toc-depth: 2
-    toc-title: "Оглавление"
+    # toc-title: "Оглавление"
     number-sections: true
     
 execute:
