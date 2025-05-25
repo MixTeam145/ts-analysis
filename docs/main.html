@@ -218,6 +218,7 @@ window.Quarto = {
   <li><a href="#сравнение-с-ssa" id="toc-сравнение-с-ssa" class="nav-link" data-scroll-target="#сравнение-с-ssa"><span class="header-section-number">23.1</span> Сравнение с SSA</a></li>
   <li><a href="#поддерживающий-ряд" id="toc-поддерживающий-ряд" class="nav-link" data-scroll-target="#поддерживающий-ряд"><span class="header-section-number">23.2</span> Поддерживающий ряд</a></li>
   </ul></li>
+  <li><a href="#d-ssa" id="toc-d-ssa" class="nav-link" data-scroll-target="#d-ssa"><span class="header-section-number">24</span> 2D-SSA</a></li>
   </ul>
 </nav>
 </nav>
@@ -257,8 +258,9 @@ window.Quarto = {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doFuture)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doRNG)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tseries)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"./R/eossa_new.R"</span>)</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magick)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"./R/eossa_new.R"</span>)</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="периодограмма-и-автокорреляционная-функция" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Периодограмма и автокорреляционная функция</h1>
@@ -4192,9 +4194,80 @@ x_n=0.1n\cdot e^{0.025 n}\cos(2 \pi n / 10 + \pi / 2) + n\cdot e^{0.02n} + 10\cd
 </div>
 </div>
 <p>Пунктиром обозначена ошибка восстановления сигнала методом SSA. Как видим, начиная с <span class="math inline">\(\sigma=2.2\)</span>, второй ряд перестает быть поддерживающим.</p>
-
-
 </section>
+</section>
+<section id="d-ssa" class="level1" data-number="24">
+<h1 data-number="24"><span class="header-section-number">24</span> 2D-SSA</h1>
+<p>Рассмотрим следующую картинку:</p>
+<p><img src="./data/cacodemon.jpg" class="img-fluid"></p>
+<p>Только будем рассматривать ее черно-белую версию.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb295"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb295-1"><a href="#cb295-1" aria-hidden="true" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"./data/cacodemon.jpg"</span>)</span>
+<span id="cb295-2"><a href="#cb295-2" aria-hidden="true" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">image_convert</span>(img, <span class="at">colorspace =</span> <span class="st">"gray"</span>)</span>
+<span id="cb295-3"><a href="#cb295-3" aria-hidden="true" tabindex="-1"></a>img_data <span class="ot">&lt;-</span> <span class="fu">image_data</span>(img)</span>
+<span id="cb295-4"><a href="#cb295-4" aria-hidden="true" tabindex="-1"></a>img_data <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(img_data)[, , <span class="dv">1</span>]</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb296"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb296-1"><a href="#cb296-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(img_data, <span class="at">L =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">25</span>), <span class="at">kind =</span> <span class="st">"2d-ssa"</span>)</span>
+<span id="cb296-2"><a href="#cb296-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s, <span class="st">"vectors"</span>)</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-213-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb297"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb297-1"><a href="#cb297-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">reconstruct</span>(s, <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>)), <span class="at">type =</span> <span class="st">"cumsum"</span>, <span class="at">at =</span> <span class="st">"free"</span>)</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-214-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Добавим шума:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb298"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb298-1"><a href="#cb298-1" aria-hidden="true" tabindex="-1"></a>noise <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb298-2"><a href="#cb298-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">30</span> <span class="sc">*</span> <span class="fu">cos</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fu">seq_along</span>(img_data) <span class="sc">/</span> <span class="dv">11</span>),</span>
+<span id="cb298-3"><a href="#cb298-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>(img_data),</span>
+<span id="cb298-4"><a href="#cb298-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ncol</span>(img_data)</span>
+<span id="cb298-5"><a href="#cb298-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb298-6"><a href="#cb298-6" aria-hidden="true" tabindex="-1"></a>img_noisy <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(img_data <span class="sc">+</span> noise, <span class="dv">0</span>), <span class="dv">255</span>)</span>
+<span id="cb298-7"><a href="#cb298-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb298-8"><a href="#cb298-8" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">ssa</span>(img_noisy, <span class="at">L =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">25</span>), <span class="at">kind =</span> <span class="st">"2d-ssa"</span>)</span>
+<span id="cb298-9"><a href="#cb298-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s, <span class="st">"vectors"</span>)</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-215-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb299"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb299-1"><a href="#cb299-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">wcor</span>(s, <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>))</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-215-2.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Компоненты <span class="math inline">\(4\)</span> и <span class="math inline">\(5\)</span> соответствуют шуму, уберем его</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb300"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb300-1"><a href="#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">reconstruct</span>(s, <span class="fu">list</span>(<span class="at">Noise =</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">5</span>)))</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/unnamed-chunk-216-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->

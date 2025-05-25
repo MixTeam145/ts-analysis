@@ -16,6 +16,7 @@ library(parallel)
 library(doFuture)
 library(doRNG)
 library(tseries)
+library(magick)
 
 source("./R/eossa_new.R")
 ```
@@ -2575,3 +2576,48 @@ data.frame(sigma = sds, MSE = colMeans(mse_support |> select(-ssa))) |>
 ```
 
 Пунктиром обозначена ошибка восстановления сигнала методом SSA. Как видим, начиная с $\sigma=2.2$, второй ряд перестает быть поддерживающим.
+
+# 2D-SSA
+
+Рассмотрим следующую картинку:
+
+![](./data/cacodemon.jpg)
+
+Только будем рассматривать ее черно-белую версию.
+
+```{r}
+img <- image_read("./data/cacodemon.jpg")
+img <- image_convert(img, colorspace = "gray")
+img_data <- image_data(img)
+img_data <- as.integer(img_data)[, , 1]
+```
+
+```{r}
+s <- ssa(img_data, L = c(25, 25), kind = "2d-ssa")
+plot(s, "vectors")
+```
+
+```{r}
+plot(reconstruct(s, list(1:3, 4:6, 7:10, 11:20)), type = "cumsum", at = "free")
+```
+
+Добавим шума:
+
+```{r}
+noise <- matrix(
+  30 * cos(2 * pi * seq_along(img_data) / 11),
+  nrow(img_data),
+  ncol(img_data)
+)
+img_noisy <- pmin(pmax(img_data + noise, 0), 255)
+
+s <- ssa(img_noisy, L = c(25, 25), kind = "2d-ssa")
+plot(s, "vectors")
+plot(wcor(s, 1:20))
+```
+
+Компоненты $4$ и $5$ соответствуют шуму, уберем его
+```{r}
+plot(reconstruct(s, list(Noise = 4:5)))
+```
+

@@ -4,7 +4,7 @@
     "href": "main.html",
     "title": "Статистический анализ временных рядов",
     "section": "",
-    "text": "Подключаем необходимые библиотеки:\nlibrary(ggpubr)\nlibrary(lattice)\nlibrary(mFilter)\nlibrary(tidyverse)\nlibrary(parallel)\nlibrary(doFuture)\nlibrary(doRNG)\nlibrary(tseries)\n\nsource(\"./R/eossa_new.R\")"
+    "text": "Подключаем необходимые библиотеки:\nlibrary(ggpubr)\nlibrary(lattice)\nlibrary(mFilter)\nlibrary(tidyverse)\nlibrary(parallel)\nlibrary(doFuture)\nlibrary(doRNG)\nlibrary(tseries)\nlibrary(magick)\n\nsource(\"./R/eossa_new.R\")"
   },
   {
     "objectID": "main.html#искусственные-данные",
